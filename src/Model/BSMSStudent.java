@@ -9,9 +9,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="UNDERGRAD")
+@Table(name="BSMS_STUDENT")
 @PrimaryKeyJoinColumn(name="id")
-public class UnderGradStudent extends Student{
+public class BSMSStudent extends MasterStudent{
 	
 	@Column(name="major")
 	private String major;
@@ -21,9 +21,9 @@ public class UnderGradStudent extends Student{
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="college_id")
-	private College college;
+	private College collegeBSMS;
 
-	public UnderGradStudent() {
+	public BSMSStudent() {
 		super();
 	}
 
@@ -43,12 +43,11 @@ public class UnderGradStudent extends Student{
 		this.minor = minor;
 	}
 
-	public College getCollege() {
-		return college;
+	public College getCollegeBSMS() {
+		return collegeBSMS;
 	}
 
-	public void setCollege(College college) {
-		this.college = college;
+	public void setCollegeBSMS(College collegeBSMS) {
+		this.collegeBSMS = collegeBSMS;
 	}
-	
 }

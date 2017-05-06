@@ -6,14 +6,11 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<jsp:include page="common_headers.jsp"></jsp:include>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/index.js"></script>
-<title>Home</title>
+<jsp:include page="common_headers.jsp">
+    <jsp:param name="title" value="Home"/>
+    <jsp:param name="mainJsFile" value="index.js"/>
+</jsp:include>
 </head>
-
 <body class="container-fluid">
 <header class="row">
 	<div class="col-md-offset-3 col-md-6">
@@ -28,8 +25,9 @@
 <div class="row">
 	<div class="col-md-offset-4 col-md-4">
 		<div class="row">
-				<h3><a href="${pageContext.request.contextPath}/course">Add New Course</a></h3>
-				<h3><a href="${pageContext.request.contextPath}/class">Add New Class</a></h3>
+				<h3><a href="${pageContext.request.contextPath}/course/entry">Add New Course</a></h3>
+				<h3><a href="${pageContext.request.contextPath}/class/entry">Add New Class</a></h3>
+				<h3><a href="${pageContext.request.contextPath}/student/entry">Add New Student</a></h3>
 		</div>	
 	</div>
 </div>

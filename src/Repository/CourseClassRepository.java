@@ -1,8 +1,6 @@
 package Repository;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import IRepository.ICourseClassRepository;
@@ -13,10 +11,7 @@ import Model.ReviewSession;
 import Model.Section;
 
 @Repository
-public class CourseClassRepository implements ICourseClassRepository {
-
-	@Autowired 
-	private SessionFactory sessionFactory;
+public class CourseClassRepository extends BaseRepository implements ICourseClassRepository {
 	
 	@Override
 	public void insertCourseClass(CourseClass courseClass) {

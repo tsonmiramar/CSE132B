@@ -1,13 +1,24 @@
 package Model;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -34,9 +45,20 @@ public class Student {
 	@Column(name="ssn")
 	private int ssn;
 	
-	@Column(name="resident_stat")
-	private int resident_status;
-
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="resident_status")
+	private ResidentStatus residentStatus;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	@Cascade(CascadeType.ALL)
+	@JoinTable(name="ATTENDANCE",
+				joinColumns={@JoinColumn(name="student_id", nullable=false, updatable=false)},
+				inverseJoinColumns={@JoinColumn(name="quarter_id", nullable=false, updatable=false)}
+			)
+	private Collection<Quarter> quarterAttendList = new HashSet<Quarter>();
+	
+	public Student(){}
+	
 	public int getId() {
 		return id;
 	}
@@ -85,11 +107,19 @@ public class Student {
 		this.ssn = ssn;
 	}
 
-	public int getResident_status() {
-		return resident_status;
+	public ResidentStatus getResidentStatus() {
+		return residentStatus;
 	}
 
-	public void setResident_status(int resident_status) {
-		this.resident_status = resident_status;
+	public void setResidentStatus(ResidentStatus residentStatus) {
+		this.residentStatus = residentStatus;
+	}
+
+	public Collection<Quarter> getQuarterAttendList() {
+		return quarterAttendList;
+	}
+
+	public void setQuarterAttendList(Collection<Quarter> quarterAttendList) {
+		this.quarterAttendList = quarterAttendList;
 	}
 }

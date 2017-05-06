@@ -3,20 +3,16 @@ package Repository;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import IRepository.IDepartmentRepository;
 import Model.DEPARTMENT;
 
 @Repository
-public class DepartmentRepository implements IDepartmentRepository{
+public class DepartmentRepository extends BaseRepository implements IDepartmentRepository{
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-
 	@Override
 	@Transactional
 	public List<DEPARTMENT> getAllDepartment() {

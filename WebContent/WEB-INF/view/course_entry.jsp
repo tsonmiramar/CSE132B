@@ -4,20 +4,14 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<jsp:include page="common_headers.jsp"></jsp:include>
-
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/course_entry.js"></script>
-
-<title>Course Entry</title>
-</head>
+<jsp:include page="common_headers.jsp">
+    <jsp:param name="title" value="Course Entry"/>
+    <jsp:param name="mainJsFile" value="course_entry.js"/>
+</jsp:include>
 <body class="container-fluid">
-	<header class="row">
-		<div class="col-md-offset-3 col-md-6">
-			<h1>Course Entry Form</h1>
-		</div>
-	</header>
+	<jsp:include page="entry_header.jsp">
+    	<jsp:param name="entry_name" value="Course Entry Form"/>
+    </jsp:include>
 	<div class="row">
 		<div class="col-md-offset-3 col-md-6">
 			<form id="course_entryForm" method="POST" action="${pageContext.request.contextPath}/course/add">

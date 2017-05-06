@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import IService.IQuarterService;
 import Model.Quarter;
+import Model.QuarterName;
 import Repository.QuarterRepository;
 
 @Service
@@ -21,4 +22,9 @@ public class QuarterService implements IQuarterService{
 		return quarterRepository.getAllQuarter();
 	}
 
+	@Override
+	@Transactional
+	public List<QuarterName> getAllQuarterName() {
+		return quarterRepository.getAllQuarterName();
+	}
 }

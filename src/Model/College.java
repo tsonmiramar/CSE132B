@@ -14,27 +14,28 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
-@Table(name= "DEPARTMENT")
-public class DEPARTMENT {
+@Table(name="COLLEGE")
+public class College {
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
 	private int id;
 	
 	@Column(name="name")
 	private String name;
 	
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="department")
-	private Collection<CourseSubject> subjectList = new HashSet<CourseSubject>();
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="college")
+	private Collection<UnderGradStudent> undergradList = new HashSet<UnderGradStudent>();
+
 	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="department")
-	private Collection<Faculty> facultyList = new HashSet<Faculty>();
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="collegeBSMS")
+	private Collection<BSMSStudent> bsmsList = new HashSet<BSMSStudent>();
 	
-	public DEPARTMENT(){}
+	public College() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -52,20 +53,20 @@ public class DEPARTMENT {
 		this.name = name;
 	}
 
-	public Collection<CourseSubject> getSubjectList() {
-		return subjectList;
+	public Collection<UnderGradStudent> getUndergradList() {
+		return undergradList;
 	}
 
-	public void setSubjectList(Collection<CourseSubject> subjectList) {
-		this.subjectList = subjectList;
+	public void setUndergradList(Collection<UnderGradStudent> undergradList) {
+		this.undergradList = undergradList;
 	}
 
-	public Collection<Faculty> getFacultyList() {
-		return facultyList;
+	public Collection<BSMSStudent> getBsmsList() {
+		return bsmsList;
 	}
 
-	public void setFacultyList(Collection<Faculty> facultyList) {
-		this.facultyList = facultyList;
+	public void setBsmsList(Collection<BSMSStudent> bsmsList) {
+		this.bsmsList = bsmsList;
 	}
-
+	
 }

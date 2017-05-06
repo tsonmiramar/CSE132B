@@ -1,7 +1,21 @@
 package Model;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="QUARTER")
@@ -11,14 +25,20 @@ public class Quarter {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="name")
-	private String name;
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="name_id", updatable=false)
+	private QuarterName quarterName;
 	
-	@Column(name="year")
+	@Column(name="year", updatable=false)
 	private int year;
-
+	
+	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="quarterList")
 	private Collection<CourseClass> classList = new HashSet<CourseClass>();
+	
+	@JsonIgnore
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy="quarterAttendList", cascade=CascadeType.ALL)
+	private Collection<Student> studentAttendList = new HashSet<Student>();
 	
 	public Quarter() {
 		super();
@@ -32,12 +52,12 @@ public class Quarter {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public QuarterName getQuarterName() {
+		return quarterName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setQuarterName(QuarterName quarterName) {
+		this.quarterName = quarterName;
 	}
 
 	public int getYear() {
@@ -55,5 +75,12 @@ public class Quarter {
 	public void setClassList(Collection<CourseClass> classList) {
 		this.classList = classList;
 	}
-	
+
+	public Collection<Student> getStudentAttendList() {
+		return studentAttendList;
+	}
+
+	public void setStudentAttendList(Collection<Student> studentAttendList) {
+		this.studentAttendList = studentAttendList;
+	}
 }

@@ -4,21 +4,14 @@
     
 <!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<jsp:include page="common_headers.jsp"></jsp:include>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/courseclass_entry.js"></script>
-<script type="text/javascript">
-	var contextPath = "${pageContext.request.contextPath}"
-</script>
-<title>Class Entry</title>
-</head>
+<jsp:include page="common_headers.jsp">
+    <jsp:param name="title" value="Class Entry"/>
+    <jsp:param name="mainJsFile" value="courseclass_entry.js"/>
+</jsp:include>
 <body class="container-fluid">
-	<header class="row">
-		<div class="col-md-offset-3 col-md-6">
-			<h1>Class Entry Form</h1>
-		</div>
-	</header>
+	<jsp:include page="entry_header.jsp">
+        <jsp:param name="entry_name" value="Class Entry Form"/>
+    </jsp:include>
 	<div class="row">
 		<div class="col-md-offset-3 col-md-6">
 			<form id="courseclasss_entryForm" method="POST" action="${pageContext.request.contextPath}/class/add">
@@ -41,7 +34,7 @@
 						<label>Class Quarter</label>
 						<select class="form-control" id="quarter_id">
 							<c:forEach var="quarter" items="${quarterList}">
-								<option value="${quarter.id}">${quarter.name} ${quarter.year}</option>
+								<option value="${quarter.id}">${quarter.quarterName.name} ${quarter.year}</option>
 							</c:forEach>
 						</select>
 					</div>	

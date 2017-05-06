@@ -25,7 +25,7 @@ $('document').ready(function(){
 	});
 	
 	//Checkbox event handler
-	$('#SectionList').on('click', "#section #meeting input[type='radio']", function(){
+	$('#SectionList').on('click', "#section #meeting input[type='checkbox']", function(){
 		if ($(this).is(":checked")){
 			$(this).val("true");
 		}

@@ -1,21 +1,19 @@
 package Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import IRepository.ICourseRepository;
-import Model.*;
+import Model.Course;
+import Model.CourseSubject;
+import Model.CourseUnitNumber;
 
 @Repository
-public class CourseRepository implements ICourseRepository{
+public class CourseRepository extends BaseRepository implements ICourseRepository{
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-
 	@Override
 	public List<Course> getAllCourse() {
 		Session session = this.sessionFactory.getCurrentSession();
