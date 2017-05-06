@@ -212,16 +212,16 @@ $('document').ready(function(){
 		if ( $("#undergrad").is(":checked") || $("#BSMS").is(":checked")){
 			student["major"] = $("#SubStudentEntry #major").val();
 			student["minor"] = $("#SubStudentEntry #minor").val();
-			student["college"] = { "id": $("#SubStudentEntry #college option:selected").val() };
 			
 			if ($("#BSMS").is(":checked")){
 				student['department'] = {
 						"id": $("#department option:selected").val()
 				};
-				
+				student["collegeBSMS"] = { "id": $("#SubStudentEntry #college option:selected").val() };
 				studentTypeJSON['bsmsMaster'] = student;
 			}
 			else {
+				student["college"] = { "id": $("#SubStudentEntry #college option:selected").val() };
 				studentTypeJSON["underGrad"] = student;
 			}
  		}
@@ -244,8 +244,8 @@ $('document').ready(function(){
 				studentTypeJSON['phdPreCandidate'] = student;
 			}
 		}
-		console.log(studentTypeJSON);
 		
+		//Submit form
 		$.ajax({
 			url:$("#student_entryForm").attr('action'),
 			type: "POST",
@@ -255,6 +255,22 @@ $('document').ready(function(){
 			},
 			success: function(data, textStatus){
 				alert("Successfully insert a new student");
+				
+				//Retrieve updated quarterList
+				$.ajax({
+					url:contextPath+"/quarter/list",
+					type: "GET",
+					headers: {
+						'Content-Type':'application/json'
+					},
+					success: function(data, textStatus){
+						//Convert QuarterList to JSON Mapping
+						quarterJSON = toQuarterJSONMapping(data);
+					},
+					error: function(data, textStatus){
+						alert("Failed to retrieve quarter list. Please refresh page");
+					}
+				});
 			},
 			error: function(data, textStatus){
 				alert("Failed to insert student. Please retry");
