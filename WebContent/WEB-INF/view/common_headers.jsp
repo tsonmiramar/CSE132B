@@ -7,6 +7,9 @@
 	<c:if test="${param.mainJsFile != null }">
 		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/${param.mainJsFile}"></script>
 	</c:if>
+	<c:if test="${param.commonfunction != null }">
+		<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/${param.commonfunction}"></script>
+	</c:if>
 	<c:if test="${param.mainCSSFile != null }">
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/${param.mainCSSFile}">
 	</c:if>

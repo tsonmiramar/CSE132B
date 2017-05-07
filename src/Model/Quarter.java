@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +40,10 @@ public class Quarter {
 	@JsonIgnore
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy="quarterAttendList", cascade=CascadeType.ALL)
 	private Collection<Student> studentAttendList = new HashSet<Student>();
+	
+	@JsonIgnore
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="quarterProbation")
+	private Collection<Probation> probation = new HashSet<Probation>();
 	
 	public Quarter() {
 		super();
@@ -82,5 +87,13 @@ public class Quarter {
 
 	public void setStudentAttendList(Collection<Student> studentAttendList) {
 		this.studentAttendList = studentAttendList;
+	}
+
+	public Collection<Probation> getProbation() {
+		return probation;
+	}
+
+	public void setProbation(Collection<Probation> probation) {
+		this.probation = probation;
 	}
 }

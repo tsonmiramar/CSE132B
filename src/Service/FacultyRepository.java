@@ -3,19 +3,15 @@ package Service;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import IRepository.IFacultyRespository;
 import Model.Faculty;
+import Repository.BaseRepository;
 
 @Repository
-public class FacultyRepository implements IFacultyRespository {
-	
-	@Autowired
-	private SessionFactory sessionFactory;
+public class FacultyRepository extends BaseRepository implements IFacultyRespository {
 	
 	@Override
 	public List<Faculty> getAllFaculty() {
@@ -26,6 +22,12 @@ public class FacultyRepository implements IFacultyRespository {
 		List<Faculty> facultyList = query.getResultList();
 		
 		return facultyList;
+	}
+
+	@Override
+	public void insertFaculty(Faculty faculty) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(faculty);
 	}
 
 }

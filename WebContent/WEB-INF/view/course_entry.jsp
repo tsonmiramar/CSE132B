@@ -85,9 +85,7 @@
 						</div>
 					</div>
 					
-					<div class="form-group">
-						<button type="submit" class="btn btn-submit" id="SubmitBtn">Submit</button>
-					</div>
+					<jsp:include page="submitBtn.jsp"></jsp:include>
 				</div>	
 			</form>
 		</div>

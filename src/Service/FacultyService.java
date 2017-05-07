@@ -21,4 +21,10 @@ public class FacultyService implements IFacultyService {
 		return this.facultyRepository.getAllFaculty();
 	}
 
+	@Override
+	@Transactional
+	public void insertFaculty(Faculty faculty) {
+		facultyRepository.insertFaculty(faculty);
+	}
+
 }

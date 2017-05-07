@@ -6,7 +6,8 @@
 <html>
 <jsp:include page="common_headers.jsp">
 	<jsp:param name="title" value="Student Entry"/>
-	<jsp:param name="mainJsFile" value="student_entry.js"/>	
+	<jsp:param name="mainJsFile" value="student_entry.js"/>
+	<jsp:param name="commonfunction" value="commonfunction.js"/>	
 </jsp:include>
 <body class="container-fluid">
 	<jsp:include page="entry_header.jsp">
@@ -62,6 +63,7 @@
 						</div>
 					</c:forTokens>
 				</div>
+				
 				<label>Student Type:</label>
 				<div class="form-group row" id="studentType">
 					<c:forTokens var="type" items="undergrad,master,BSMS,phD,pre-PhD" delims=",">
@@ -87,9 +89,7 @@
 						 depends on student type chose above -->
 				</div>
 				
-				<div class="form-group row">
-					<button type="submit" class="btn btn-submit pull-right" id="submitBtn">Submit</button>
-				</div>
+				<jsp:include page="submitBtn.jsp"></jsp:include>
 			</form>
 		</div>
 	</div>

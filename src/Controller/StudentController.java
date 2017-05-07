@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Model.Probation;
 import Model.QuarterName;
 import Model.ResidentStatus;
+import Model.Student;
 import Model.StudentType;
 import Service.QuarterService;
 import Service.StudentService;
@@ -37,6 +39,28 @@ public class StudentController {
 		model.addAttribute("quarterNameList", quarterNameList);
 		model.addAttribute("residentStatusList", residentStatusList);
 		return "student_entry";
+	}
+	
+	@GetMapping("/probation/entry")
+	public String getProbationSubmission(Model model){
+		List<Student> studentList = studentService.getAllStudent();
+		List<QuarterName> quarterNameList = quarterService.getAllQuarterName();
+		model.addAttribute("studentList", studentList);
+		model.addAttribute("quarterNameList", quarterNameList);
+		return "probation_entry";
+	}
+	
+	@PostMapping("/probation/add")
+	@ResponseBody
+	public ResponseEntity<Void> addProbation(@RequestBody List<Probation> probation){
+		try{
+			this.studentService.insertProbation(probation);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping("/{type}/entry")

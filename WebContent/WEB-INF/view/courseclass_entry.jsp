@@ -40,14 +40,13 @@
 					</div>	
 				</div>
 				
-				<div id="SectionList">
-				</div>
+				<div id="SectionList"></div>
 			
-				<div class="form-group">
+				<div class="form-group row">
 					<button type="button" class="btn btn-primary pull-left" id="AddSectionBtn">Add Class Section</button>
-					<button type="submit" class="btn btn-submit pull-right" id="SubmitBtn">Submit</button>
 				</div>
 				
+				<jsp:include page="submitBtn.jsp"></jsp:include>	
 			</form>
 		</div>
 	</div>
