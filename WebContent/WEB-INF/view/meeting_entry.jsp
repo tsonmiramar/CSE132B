@@ -25,35 +25,5 @@
 			Mandatory Attendance ?
 	</label>
 </div>
-<div class="form-group row">
-	<div class="col-md-4">
-		<label> Weekday </label>
-		<select class="form-control" id="weekday">
-			<c:forTokens var="day" items="Monday,Tuesday,Wednesday,Thursday,Friday" delims=",">
-				<option value="${day}">${day} </option>
-			</c:forTokens>
-		</select>
-	</div>
-	
-	<div class="col-md-4">
-		<label>Start Time</label>
-		<input class="form-control" type="time" id="startTime" />
-	</div>
-	
-	<div class="col-md-4">
-		<label>End Time</label>
-		<input class="form-control" type="time" id="endTime" />
-	</div>
-</div>
 
-<div class="form-group row">
-	<div class="col-md-4">
-		<label>Building</label>
-		<input class="form-control" type="text" id="building" placeholder="Enter Building"/>
-	</div>
-	
-	<div class="col-md-4">
-		<label>Room</label>
-		<input class="form-control" type="text" id="room" placeholder="Enter Room"/>
-	</div>
-</div>
+<jsp:include page="basemeeting_entry.jsp"></jsp:include>

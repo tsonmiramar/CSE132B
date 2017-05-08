@@ -1,7 +1,20 @@
 package Model;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="COURSE_SUBJECT")
@@ -15,10 +28,12 @@ public class CourseSubject {
 	@Column(name="symbol")
 	private String symbol;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="dept_id", referencedColumnName="id", nullable=false)
 	private DEPARTMENT department;
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="courseSubject")
 	private Collection<Course> courseList = new HashSet<Course>();
 	

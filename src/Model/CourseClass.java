@@ -1,10 +1,11 @@
 package Model;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -14,9 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.CascadeType;
 
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Parameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,14 +44,16 @@ public class CourseClass {
 	@Column(name="title")
 	private String title;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name="CLASS_QUARTER",
 			joinColumns = { @JoinColumn(name = "class_id", nullable = false)},
 			inverseJoinColumns = { @JoinColumn(name = "quarter_id", nullable = false)}
 			)
 	private Collection<Quarter> quarterList = new HashSet<Quarter>();
 
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="sectionClass", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="sectionClass", cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Section> sectionList = new HashSet<Section>();
 	
 	public CourseClass() {

@@ -1,9 +1,26 @@
 package Model;
-import java.util.*;
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Check;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="COURSE")
@@ -19,12 +36,14 @@ public class Course {
 	@JoinColumn(name="subject_id")
 	private CourseSubject courseSubject;
 	
+	@JsonIgnore
 	@Embedded
 	private CourseExtraOption courseOption;
 	
 	@Embedded
 	private CourseUnitNumber courseUnitNumber;
 	
+	@JsonIgnore
 	@ManyToMany(fetch= FetchType.LAZY)
 	@JoinTable(name="PREREQUISITE", 
 				joinColumns = { @JoinColumn(name = "course_id", nullable = false)},
@@ -32,9 +51,11 @@ public class Course {
 			  )
 	private Collection<Course> prereq = new HashSet<Course>(); //List of all prerequisite of this course
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy="prereq", fetch= FetchType.LAZY)
 	private Collection<Course> prereqOf = new HashSet<Course>(); //List of all course having this course as prerequisite
 	
+	@JsonIgnore
 	@OneToOne(mappedBy="course")
 	@Cascade(value=org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	private CourseClass courseClass;

@@ -12,4 +12,8 @@ public interface ICourseService {
 	public void insertCourse(Course course);
 	
 	public void insertCourseClass(CourseClass courseClass);
+
+	List<CourseClass> getAllCourseClass();
+
+	void insertReviewSession(ReviewSession reviewSession);
 }

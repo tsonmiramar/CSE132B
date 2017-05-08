@@ -37,6 +37,19 @@ public class CourseClassController {
 		return "courseclass_entry";
 	}
 	
+	@GetMapping("/list")
+	@ResponseBody
+	public ResponseEntity<List<CourseClass>> getAllCourseClass(){
+		try {
+			List<CourseClass> courseClassList = this.courseService.getAllCourseClass();
+			return new ResponseEntity<>(courseClassList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Void> addCourseClass(@RequestBody CourseClass courseClass){

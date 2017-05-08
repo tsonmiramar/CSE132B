@@ -1,7 +1,21 @@
 package Model;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="SECTION")
@@ -12,10 +26,11 @@ public class Section {
 	@Column(name="id")
 	private int id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="faculty_id")
 	private Faculty faculty;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="class_id")
 	private CourseClass sectionClass;
@@ -23,12 +38,15 @@ public class Section {
 	@Column(name="enroll_limit")
 	private int enrollmentLimit;
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<ReviewSession> reviewSessionList = new HashSet<ReviewSession>();
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<Discussion> discussionList = new HashSet<Discussion>();
 	
+	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<NonDiscussion> nondiscussionList = new HashSet<NonDiscussion>();
 	

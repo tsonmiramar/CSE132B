@@ -1,5 +1,7 @@
 package Repository;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,19 @@ import Model.Section;
 
 @Repository
 public class CourseClassRepository extends BaseRepository implements ICourseClassRepository {
+	
+	@Override
+	public List<CourseClass> getAllCourseClass(){
+		Session session = sessionFactory.getCurrentSession();	
+		
+		List<CourseClass> courseClassList = session.createQuery("select c from CourseClass c "
+															  + "join c.quarterList q "
+															  + "on q.quarterName.name=:quarter and q.year=:year",CourseClass.class)
+											.setParameter("quarter", "Spring")
+											.setParameter("year", 2017)
+											.getResultList();
+		return courseClassList;
+	}
 	
 	@Override
 	public void insertCourseClass(CourseClass courseClass) {
@@ -33,6 +48,12 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		}
 		
 		session.save(courseClass);		
+	}
+	
+	@Override
+	public void addReviewSession(ReviewSession reviewSession){
+		Session session = sessionFactory.getCurrentSession();
+		session.save(reviewSession);
 	}
 
 }

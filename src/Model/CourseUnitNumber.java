@@ -3,18 +3,23 @@ package Model;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Embeddable
 public class CourseUnitNumber {
 	
 	@Column(name="currNum")
 	private String currNum;
 	
+	@JsonIgnore
 	@Column(name="prevNum")
 	private String prevNum;
-	
+		
+	@JsonIgnore
 	@Column(name="unitFrom")
 	private int unitFrom;
 	
+	@JsonIgnore
 	@Column(name="unitTo")
 	private int unitTo;
 	

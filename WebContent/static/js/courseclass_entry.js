@@ -102,23 +102,23 @@ $('document').ready(function(){
 				}
 				
 				courseClass['sectionList'].push(section);
-				
-				var formURL = $('#courseclasss_entryForm').attr("action");
-				$.ajax({
-					url:formURL,
-					type: "POST",
-					data:JSON.stringify(courseClass),
-					headers: {
-						'Content-Type':'application/json'
-					},
-					success: function(data, textStatus){
-						alert("Successfully insert a new class");
-					},
-					error: function(data, textStatus){
-						alert("Failed to insert class. Please retry");
-					}
-				});
 			});
 		}
+		
+		var formURL = $('#courseclasss_entryForm').attr("action");
+		$.ajax({
+			url:formURL,
+			type: "POST",
+			data:JSON.stringify(courseClass),
+			headers: {
+				'Content-Type':'application/json'
+			},
+			success: function(data, textStatus){
+				alert("Successfully insert a new class");
+			},
+			error: function(data, textStatus){
+				alert("Failed to insert class. Please retry");
+			}
+		});
 	});
 });
