@@ -1,6 +1,5 @@
 package Model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -13,11 +12,13 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name="id")
 public class BSMSStudent extends MasterStudent{
 	
-	@Column(name="major")
-	private String major;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="major_id")
+	private DEPARTMENT majorBSMS;
 	
-	@Column(name="minor")
-	private String minor;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="minor_id")
+	private DEPARTMENT minorBSMS;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="college_id")
@@ -27,20 +28,20 @@ public class BSMSStudent extends MasterStudent{
 		super();
 	}
 
-	public String getMajor() {
-		return major;
+	public DEPARTMENT getMajorBSMS() {
+		return majorBSMS;
 	}
 
-	public void setMajor(String major) {
-		this.major = major;
+	public void setMajorBSMS(DEPARTMENT majorBSMS) {
+		this.majorBSMS = majorBSMS;
 	}
 
-	public String getMinor() {
-		return minor;
+	public DEPARTMENT getMinorBSMS() {
+		return minorBSMS;
 	}
 
-	public void setMinor(String minor) {
-		this.minor = minor;
+	public void setMinorBSMS(DEPARTMENT minorBSMS) {
+		this.minorBSMS = minorBSMS;
 	}
 
 	public College getCollegeBSMS() {

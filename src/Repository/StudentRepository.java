@@ -41,8 +41,20 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 	@Override
 	public List<Student> getAllStudent() {
 		Session session = sessionFactory.getCurrentSession();
-		List<Student> studentList = session.createQuery("from Student",Student.class)
+		List<Student> studentList = new ArrayList<Student>();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery("select s.id,s.firstname,s.lastname,s.middlename from STUDENT s")
 										   .getResultList();
+		for ( Object[] obj : rset){
+			Student student = new Student();
+			student.setId((Integer)obj[0]);
+			student.setFirstname((String)obj[1]);
+			student.setLastname((String)obj[2]);
+			student.setMiddlename((String)obj[3]);
+			
+			studentList.add(student);
+		}
 		return studentList;
 	}
 

@@ -98,6 +98,8 @@ $('document').ready(function(){
 	//Load default undergrad entry
 	$('#SubStudentEntry').load(contextPath+"/student/undergrad/entry",function(){
 		appendSelectItem($("#SubStudentEntry").find("#college"),collegeList);
+		appendSelectItem($("#SubStudentEntry").find("#major"),departmentList);
+		appendSelectItem($("#SubStudentEntry").find("#minor"),departmentList);
 	});
 	
 	//Retrieve 
@@ -111,6 +113,8 @@ $('document').ready(function(){
 					appendSelectItem($("#SubStudentEntry").find("#department"),departmentList);
 				}
 				appendSelectItem($("#SubStudentEntry").find("#college"),collegeList);
+				appendSelectItem($("#SubStudentEntry").find("#major"),departmentList);
+				appendSelectItem($("#SubStudentEntry").find("#minor"),departmentList);
 			}
 			else {
 				appendSelectItem($("#SubStudentEntry").find("#department"),departmentList);
@@ -151,8 +155,12 @@ $('document').ready(function(){
 		student["quarterAttendList"] = quarterAttendList;
 		
 		if ( $("#undergrad").is(":checked") || $("#BSMS").is(":checked")){
-			student["major"] = $("#SubStudentEntry #major").val();
-			student["minor"] = $("#SubStudentEntry #minor").val();
+			student["major"] = {
+					'id':$("#SubStudentEntry #major option:selected").val()
+			};
+			student["minor"] = {
+					'id': $("#SubStudentEntry #minor option:selected").val()
+			};
 			
 			if ($("#BSMS").is(":checked")){
 				student['department'] = {
