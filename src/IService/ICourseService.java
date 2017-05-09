@@ -13,7 +13,9 @@ public interface ICourseService {
 	
 	public void insertCourseClass(CourseClass courseClass);
 
-	List<CourseClass> getAllCourseClass();
-
 	void insertReviewSession(ReviewSession reviewSession);
+
+	void insertCourseEnrollment(Enrollment enrollment);
+
+	List<CourseClass> getAllCourseClassByQuarter(String quarter, int year);
 }

@@ -10,6 +10,7 @@ import IService.ICourseService;
 import Model.Course;
 import Model.CourseClass;
 import Model.CourseSubject;
+import Model.Enrollment;
 import Model.ReviewSession;
 import Repository.CourseClassRepository;
 import Repository.CourseRepository;
@@ -38,12 +39,6 @@ public class CourseService implements ICourseService{
 	public List<Course> getAllCourse() {
 		return this.courseRepository.getAllCourse();
 	}
-
-	@Override
-	@Transactional
-	public List<CourseClass> getAllCourseClass(){
-		return this.courseClassRepository.getAllCourseClass();
-	}
 	
 	@Override
 	@Transactional
@@ -62,5 +57,17 @@ public class CourseService implements ICourseService{
 	@Transactional
 	public void insertReviewSession(ReviewSession reviewSession){
 		this.courseClassRepository.addReviewSession(reviewSession);
+	}
+	
+	@Override
+	@Transactional
+	public void insertCourseEnrollment(Enrollment enrollment){
+		this.courseClassRepository.insertEnrollment(enrollment);
+	}
+	
+	@Override
+	@Transactional
+	public List<CourseClass> getAllCourseClassByQuarter(String quarter, int year) {	
+		return this.courseClassRepository.getAllCourseClassByQuarter(quarter,year);
 	}
 }

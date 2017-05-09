@@ -8,25 +8,13 @@ import org.springframework.stereotype.Repository;
 import IRepository.ICourseClassRepository;
 import Model.CourseClass;
 import Model.Discussion;
+import Model.Enrollment;
 import Model.NonDiscussion;
 import Model.ReviewSession;
 import Model.Section;
 
 @Repository
 public class CourseClassRepository extends BaseRepository implements ICourseClassRepository {
-	
-	@Override
-	public List<CourseClass> getAllCourseClass(){
-		Session session = sessionFactory.getCurrentSession();	
-		
-		List<CourseClass> courseClassList = session.createQuery("select c from CourseClass c "
-															  + "join c.quarterList q "
-															  + "on q.quarterName.name=:quarter and q.year=:year",CourseClass.class)
-											.setParameter("quarter", "Spring")
-											.setParameter("year", 2017)
-											.getResultList();
-		return courseClassList;
-	}
 	
 	@Override
 	public void insertCourseClass(CourseClass courseClass) {
@@ -56,4 +44,22 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		session.save(reviewSession);
 	}
 
+	@Override
+	public void insertEnrollment(Enrollment enrollment) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(enrollment);
+	}
+	
+	@Override
+	public List<CourseClass> getAllCourseClassByQuarter(String quarter, int year) {
+		Session session = sessionFactory.getCurrentSession();	
+		
+		List<CourseClass> courseClassList = session.createQuery("select c from CourseClass c "
+															  + "join c.quarterList q "
+															  + "on q.quarterName.name=:quarter and q.year=:year",CourseClass.class)
+											.setParameter("quarter", quarter)
+											.setParameter("year", year)
+											.getResultList();
+		return courseClassList;
+	}
 }

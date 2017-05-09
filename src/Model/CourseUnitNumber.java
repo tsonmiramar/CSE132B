@@ -15,11 +15,9 @@ public class CourseUnitNumber {
 	@Column(name="prevNum")
 	private String prevNum;
 		
-	@JsonIgnore
 	@Column(name="unitFrom")
 	private int unitFrom;
 	
-	@JsonIgnore
 	@Column(name="unitTo")
 	private int unitTo;
 	

@@ -95,6 +95,18 @@ public class StudentController {
 		}
 	}
 	
+	@GetMapping("/list")
+	public ResponseEntity<List<Student>> getAllStudent(){
+		try {
+			List<Student> studentList = this.studentService.getAllStudent();
+			return new ResponseEntity<>(studentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Void> addStudent(@RequestBody StudentType studentType){

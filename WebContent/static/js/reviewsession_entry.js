@@ -81,7 +81,7 @@ $('document').ready(function(){
 	//Retrieve and initialize all course class and its section id
 	var courseClassJson = {};
 	$.ajax({
-		url:contextPath+"/class/list",
+		url:contextPath+"/class/Spring/2017/list",
 		type: "GET",
 		headers: {
 			'Content-Type':'application/json'
