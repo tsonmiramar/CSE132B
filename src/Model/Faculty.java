@@ -28,15 +28,15 @@ public class Faculty {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="name")
+	@Column(name="name", updatable=false)
 	private String name;
 	
-	@Column(name="title")
+	@Column(name="title", updatable=false)
 	private String title;
 	
 	@ManyToOne
 	@Fetch(FetchMode.JOIN)
-	@JoinColumn(name="dept_id")
+	@JoinColumn(name="dept_id", updatable=false)
 	private DEPARTMENT department;
 	
 	@JsonIgnore
@@ -50,8 +50,8 @@ public class Faculty {
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinTable(name="COMMITTEE_FACULTY",
-				joinColumns={ @JoinColumn(name="faculty_id") },
-				inverseJoinColumns = { @JoinColumn(name="committee_id") }
+				joinColumns={ @JoinColumn(name="faculty_id",nullable=false) },
+				inverseJoinColumns = { @JoinColumn(name="committee_id",nullable=false) }
 			)
 	private Committee facultyCommittee;
 	

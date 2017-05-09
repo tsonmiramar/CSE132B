@@ -31,30 +31,30 @@ public class Student {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="pid")
+	@Column(name="pid",updatable=false)
 	private int pid;
 	
-	@Column(name="firstname")
+	@Column(name="firstname",updatable=false)
 	private String firstname;
 	
-	@Column(name="middlename")
+	@Column(name="middlename",updatable=false)
 	private String middlename;
 	
-	@Column(name="lastname")
+	@Column(name="lastname",updatable=false)
 	private String lastname;
 	
-	@Column(name="ssn")
+	@Column(name="ssn",updatable=false)
 	private int ssn;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="resident_status")
+	@JoinColumn(name="resident_status", updatable=false)
 	private ResidentStatus residentStatus;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
-	@Cascade(CascadeType.ALL)
+	@Cascade(CascadeType.SAVE_UPDATE)
 	@JoinTable(name="ATTENDANCE",
-				joinColumns={@JoinColumn(name="student_id", nullable=false, updatable=false)},
-				inverseJoinColumns={@JoinColumn(name="quarter_id", nullable=false, updatable=false)}
+				joinColumns={@JoinColumn(name="student_id", updatable=false)},
+				inverseJoinColumns={@JoinColumn(name="quarter_id", updatable=false)}
 			)
 	private Collection<Quarter> quarterAttendList = new HashSet<Quarter>();
 	

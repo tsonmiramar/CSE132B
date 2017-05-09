@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import IService.IFacultyService;
 import Model.Faculty;
+import Repository.FacultyRepository;
 
 @Service
 public class FacultyService implements IFacultyService {
@@ -25,6 +26,12 @@ public class FacultyService implements IFacultyService {
 	@Transactional
 	public void insertFaculty(Faculty faculty) {
 		facultyRepository.insertFaculty(faculty);
+	}
+	
+	@Override
+	@Transactional
+	public List<Faculty> getAllFacultyByDepartmentId(int dept_id){
+		return facultyRepository.getAllFacultyByDepartmentId(dept_id);
 	}
 
 }

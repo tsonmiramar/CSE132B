@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Model.GradStudent;
+import Model.PhDCandidate;
 import Model.Probation;
 import Model.QuarterName;
 import Model.ResidentStatus;
@@ -66,6 +68,31 @@ public class StudentController {
 	@GetMapping("/{type}/entry")
 	public String getSubStudentEntryPage(@PathVariable String type){
 		return type+"_entry";
+	}
+	
+	@GetMapping("/phd/list")
+	@ResponseBody
+	public ResponseEntity<List<PhDCandidate>> getAllPhDCandidateStudent(){
+		try {
+			List<PhDCandidate> phdStudentList = this.studentService.getAllPhDCandidate();
+			return new ResponseEntity<>(phdStudentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/grad/list")
+	public ResponseEntity<List<GradStudent>> getAllGradStudent(){
+		try {
+			List<GradStudent> gradStudentList = this.studentService.getAllGradStudent();
+			return new ResponseEntity<>(gradStudentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PostMapping("/add")

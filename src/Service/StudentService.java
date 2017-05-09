@@ -7,10 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import IService.IStudentService;
+import Model.CommitteeType;
+import Model.GradStudent;
+import Model.PhDCandidate;
 import Model.Probation;
 import Model.ResidentStatus;
 import Model.Student;
 import Model.StudentType;
+import Repository.CommitteeRepository;
 import Repository.ResidentStatusRepository;
 import Repository.StudentRepository;
 
@@ -22,6 +26,9 @@ public class StudentService implements IStudentService{
 	
 	@Autowired
 	private ResidentStatusRepository residentStatusRespository;
+	
+	@Autowired
+	private CommitteeRepository committeeRepository;
 	
 	@Override
 	@Transactional
@@ -46,6 +53,28 @@ public class StudentService implements IStudentService{
 	@Transactional
 	public void insertProbation(List<Probation> probation) {
 		studentRepository.insertProbation(probation);
+	}
+	
+	@Override
+	@Transactional
+	public List<PhDCandidate> getAllPhDCandidate() {
+		return studentRepository.getAllPhDCandidate();
+	}
+
+	@Override
+	@Transactional
+	public void insertCommittee(CommitteeType committee_type) {
+		if ( committee_type.getGradCommittee() != null )
+			committeeRepository.insertCommittee(committee_type.getGradCommittee());
+		
+		if ( committee_type.getPhDCommittee() != null)
+			committeeRepository.insertCommittee(committee_type.getPhDCommittee());
+	}
+	
+	@Override
+	@Transactional
+	public List<GradStudent> getAllGradStudent() {
+		return studentRepository.getAllGradStudent();
 	}
 	
 }

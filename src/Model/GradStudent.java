@@ -1,6 +1,5 @@
 package Model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -15,10 +14,10 @@ import javax.persistence.Table;
 public class GradStudent extends Student{
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="dept_id")
+	@JoinColumn(name="dept_id",updatable=false)
 	private DEPARTMENT department;
-
-	@ManyToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinTable(name="COMMITTEE_GRAD",
 			joinColumns = {@JoinColumn(name = "grad_id")},
 	        inverseJoinColumns = {@JoinColumn(name = "committee_id")}

@@ -12,7 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name="COMMITTEE")
@@ -23,14 +24,14 @@ public class Committee {
 	@Column(name="id")
 	private int id;
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="facultyCommittee")
+	@OneToMany(mappedBy="facultyCommittee")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<Faculty> facultyList = new HashSet<Faculty>();
 	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="gradCommittee")
+	@OneToMany(mappedBy="gradCommittee")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<GradStudent> gradList = new HashSet<GradStudent>();
 	
-	@JsonIgnore
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="phdCommittee")
 	private Collection<PhDCandidate> phdList = new HashSet<PhDCandidate>();
 

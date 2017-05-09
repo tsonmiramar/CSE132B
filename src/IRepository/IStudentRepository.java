@@ -2,6 +2,8 @@ package IRepository;
 
 import java.util.List;
 
+import Model.GradStudent;
+import Model.PhDCandidate;
 import Model.Probation;
 import Model.Student;
 import Model.StudentType;
@@ -13,4 +15,8 @@ public interface IStudentRepository {
 	List<Student> getAllStudent();
 
 	void insertProbation(List<Probation> probation);
+
+	List<PhDCandidate> getAllPhDCandidate();
+
+	List<GradStudent> getAllGradStudent();
 }

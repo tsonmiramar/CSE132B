@@ -1,4 +1,3 @@
-
 $('document').ready(function(){
 	
 	//Submit form event

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,18 @@ public class FacultyController {
 	public ResponseEntity<List<Faculty>> getAllFaculty(){
 		try {
 			List<Faculty> facultyList = facultyService.getAllFaculty();
+			return new ResponseEntity<>(facultyList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/list/department/{id}")
+	public ResponseEntity<List<Faculty>> getAllFacultyBy(@PathVariable int id){
+		try {
+			List<Faculty> facultyList = facultyService.getAllFacultyByDepartmentId(id);
 			return new ResponseEntity<>(facultyList,HttpStatus.OK);
 		}
 		catch (Exception e){
