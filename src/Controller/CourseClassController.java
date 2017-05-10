@@ -70,6 +70,11 @@ public class CourseClassController {
 		return "enrollment_entry";
 	}
 	
+	@GetMapping("/pastenrollment/entry")
+	public String getPastEnrollmentEntry(){
+		return "pastenrollment_entry";
+	}
+	
 	@PostMapping("/enrollment/add")
 	@ResponseBody
 	public ResponseEntity<Void> addClassEnrollment(@RequestBody Enrollment enrollment){

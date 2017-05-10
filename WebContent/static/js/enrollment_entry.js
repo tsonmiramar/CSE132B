@@ -47,20 +47,10 @@ $('document').ready(function(){
 	
 			if ( data.length > 0 ){
 				var itemList = data[0].sectionList
-				for ( var idx in itemList){
-					var value = itemList[idx].id;
-					var option = new Option(value,value);
-					$("#section").append($(option));
-				}
+				retrieveSectionList($("#section"),itemList);
 				
-				var unitFrom = data[idx].course.courseUnitNumber.unitFrom;
-				var unitTo = data[idx].course.courseUnitNumber.unitTo;
-				if ( unitFrom != unitTo ){
-					$("#unitDiv").show();
-				}
-				else{
-					$("#unitDiv").hide();
-				}
+				var class_id = $("#class option:selected").val();
+				displayUnitInput(classJSON,class_id);
 			};
 		},
 		error: function(data, textStatus){
@@ -70,26 +60,12 @@ $('document').ready(function(){
 	
 	//Register Class select event handler
 	$("#class").on('change',function(){
-		var id = $("#class option:selected").val();
-		$("#section").empty();
+		var class_id = $("#class option:selected").val();
+		var itemList = classJSON[class_id].sectionList;
 		
-		var itemList = classJSON[id].sectionList;
-		for ( var idx in itemList){
-			var value = itemList[idx].id;
-			var option = new Option(value,value);
-			$("#section").append($(option));
-		}
+		retrieveSectionList($("#section"),itemList);
 		
-		var courseUnitNumber = classJSON[id].course.courseUnitNumber;
-		var unitFrom = courseUnitNumber.unitFrom;
-		var unitTo = courseUnitNumber.unitTo;
-		
-		if ( unitFrom !== unitTo ){
-			$("#unitDiv").show();
-		}
-		else{
-			$("#unitDiv").hide();
-		}
+		displayUnitInput(classJSON,class_id);
 	});
 	
 	//Form submission
@@ -138,4 +114,26 @@ var toJSON = function(itemList){
 		itemJSON[id] = itemList[idx];
 	}
 	return itemJSON;
+}
+
+var retrieveSectionList = function(selector,sectionList){
+	selector.empty();
+	for ( var idx in sectionList){
+		var value = sectionList[idx].id;
+		var option = new Option(value,value);
+		selector.append($(option));
+	}
+	
+}
+
+var displayUnitInput = function(classJSON, class_id){
+	var unitFrom = classJSON[class_id].course.courseUnitNumber.unitFrom;
+	var unitTo = classJSON[class_id].course.courseUnitNumber.unitTo;
+	if ( unitFrom != unitTo ){
+		$("#unitDiv").show();
+		$("#unitDiv").find("label").text("Unit: " + unitFrom+"-"+unitTo);
+	}
+	else{
+		$("#unitDiv").hide();
+	}
 }

@@ -5,42 +5,39 @@
 <!DOCTYPE html>
 <html>
 <jsp:include page="common_headers.jsp">
-	<jsp:param name="title" value="Enrollment Entry"/>
-	<jsp:param name="mainJsFile" value="enrollment_entry.js"/>	
+	<jsp:param name="title" value="Past Enrollment Entry"/>
+	<jsp:param name="mainJsFile" value="pastenrollment_entry.js"/>	
 </jsp:include>
 <body class="container-fluid">
 	<jsp:include page="entry_header.jsp">
-        <jsp:param name="entry_name" value="Enrollment Entry"/>
+        <jsp:param name="entry_name" value="Past Enrollment Entry"/>
     </jsp:include>
 	<div class="row">
 		<div class="col-md-offset-3 col-md-6">
-			<form method="POST" action="${pageContext.request.contextPath}/class/enrollment/add" id="enrollment_entryForm">
+			<form method="POST" action="${pageContext.request.contextPath}/class/enrollment/add" id="pastenrollment_entryForm">
 				<div class="form-group row">
-					<c:forTokens var="identity" items="student" delims=",">
+					<c:forTokens var="identity" items="student,quarter" delims=",">
 						<div class="col-md-6">
 							<label style="text-transform:capitalize">${identity }</label>
 							<select class="form-control" id="${identity}"></select>
 						</div>
 					</c:forTokens>
-					
-					<div class="col-md-6">
-						<label>Quarter:</label>
-						<h4>Spring 2017</h4>
-					</div>
 				</div>
 				
 				<div class="form-group row">
 					<c:forTokens var="identity" items="class,section" delims=",">		
-						<div class="col-md-4">
+						<div class="col-md-3">
 							<label style="text-transform:capitalize">${identity}</label>
 							<select class="form-control" id="${identity}"></select>
 						</div>
 					</c:forTokens>
 					
-					<div class="col-md-4" id="unitDiv">
-						<label>Unit</label>
-						<input type="text" class="form-control" id="unit" placeholder="Enter unit taken"/>
-					</div>
+					<c:forTokens var="identity" items="unit,grade" delims=",">
+						<div class="col-md-3" id="${identity}Div">
+							<label style="text-transform:capitalize">${identity}</label>
+							<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
+						</div>
+					</c:forTokens>
 				</div>
 				
 				<jsp:include page="submitBtn.jsp"></jsp:include>

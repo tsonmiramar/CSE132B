@@ -155,22 +155,28 @@ $('document').ready(function(){
 		student["quarterAttendList"] = quarterAttendList;
 		
 		if ( $("#undergrad").is(":checked") || $("#BSMS").is(":checked")){
-			student["major"] = {
-					'id':$("#SubStudentEntry #major option:selected").val()
-			};
-			student["minor"] = {
-					'id': $("#SubStudentEntry #minor option:selected").val()
-			};
 			
 			if ($("#BSMS").is(":checked")){
 				student['department'] = {
 						"id": $("#department option:selected").val()
 				};
 				student["collegeBSMS"] = { "id": $("#SubStudentEntry #college option:selected").val() };
+				student["majorBSMS"] = {
+						'id':$("#SubStudentEntry #major option:selected").val()
+				};
+				student["minorBSMS"] = {
+						'id': $("#SubStudentEntry #minor option:selected").val()
+				};
 				studentTypeJSON['bsmsMaster'] = student;
 			}
 			else {
 				student["college"] = { "id": $("#SubStudentEntry #college option:selected").val() };
+				student["major"] = {
+						'id':$("#SubStudentEntry #major option:selected").val()
+				};
+				student["minor"] = {
+						'id': $("#SubStudentEntry #minor option:selected").val()
+				};
 				studentTypeJSON["underGrad"] = student;
 			}
  		}

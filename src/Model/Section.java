@@ -38,16 +38,13 @@ public class Section {
 	@Column(name="enroll_limit")
 	private int enrollmentLimit;
 	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<ReviewSession> reviewSessionList = new HashSet<ReviewSession>();
 	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<Discussion> discussionList = new HashSet<Discussion>();
 	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="section", targetEntity=Meeting.class, cascade = CascadeType.ALL)
 	private Collection<NonDiscussion> nondiscussionList = new HashSet<NonDiscussion>();
 	
 	public Section() {
