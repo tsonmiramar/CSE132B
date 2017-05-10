@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -57,9 +56,6 @@ public class Student {
 				inverseJoinColumns={@JoinColumn(name="quarter_id", updatable=false)}
 			)
 	private Collection<Quarter> quarterAttendList = new HashSet<Quarter>();
-	
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="studentProbation")
-	private Collection<Probation> probation = new HashSet<Probation>();
 	
 	public Student(){}
 	
@@ -127,11 +123,4 @@ public class Student {
 		this.quarterAttendList = quarterAttendList;
 	}
 
-	public Collection<Probation> getProbation() {
-		return probation;
-	}
-
-	public void setProbation(Collection<Probation> probation) {
-		this.probation = probation;
-	}
 }

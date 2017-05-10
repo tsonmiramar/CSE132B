@@ -14,13 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Check;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="COURSE")
@@ -36,42 +32,23 @@ public class Course {
 	@JoinColumn(name="subject_id")
 	private CourseSubject courseSubject;
 	
-	@JsonIgnore
 	@Embedded
 	private CourseExtraOption courseOption;
 	
 	@Embedded
 	private CourseUnitNumber courseUnitNumber;
 	
-	@JsonIgnore
-	@ManyToMany(fetch= FetchType.LAZY)
+	@ManyToMany
 	@JoinTable(name="PREREQUISITE", 
 				joinColumns = { @JoinColumn(name = "course_id", nullable = false)},
 				inverseJoinColumns = { @JoinColumn(name = "prereq_id", nullable = false)}
 			  )
 	private Collection<Course> prereq = new HashSet<Course>(); //List of all prerequisite of this course
-	
-	@JsonIgnore
-	@ManyToMany(mappedBy="prereq", fetch= FetchType.LAZY)
-	private Collection<Course> prereqOf = new HashSet<Course>(); //List of all course having this course as prerequisite
-	
-	@JsonIgnore
-	@OneToOne(mappedBy="course")
-	@Cascade(value=org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	private CourseClass courseClass;
-	
+		
 	public Course() {}
 
 	public int getId() {
 		return id;
-	}
-	
-	public Collection<Course> getPrereqOf() {
-		return prereqOf;
-	}
-	
-	public void setPrereqOf(Collection<Course> prereqOf) {
-		this.prereqOf = prereqOf;
 	}
 	
 	public void setId(int id) {
@@ -105,20 +82,4 @@ public class Course {
 	public void setPrereq(Collection<Course> prereq) {
 		this.prereq = prereq;
 	}
-
-	public CourseClass getCourseClass() {
-		return courseClass;
-	}
-
-	public void setCourseClass(CourseClass courseClass) {
-		this.courseClass = courseClass;
-	}
-
-	@Override
-	public String toString() {
-		return "Course [id=" + id + ", courseSubject=" + courseSubject.toString() + ", courseOption=" + courseOption.toString()
-				+ ", courseUnitNumber=" + courseUnitNumber + ", prereq=" + prereq + ", prereqOf=" + prereqOf + "]";
-	}
-	
-	
 }

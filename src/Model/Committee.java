@@ -33,6 +33,7 @@ public class Committee {
 	private Collection<GradStudent> gradList = new HashSet<GradStudent>();
 	
 	@OneToMany(fetch=FetchType.LAZY,mappedBy="phdCommittee")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private Collection<PhDCandidate> phdList = new HashSet<PhDCandidate>();
 
 	public int getId() {

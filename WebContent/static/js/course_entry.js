@@ -83,9 +83,6 @@ $('document').ready(function(){
 			});
 		}
 		
-		course['prereqOf'] = [];
-		
-		
 		var formURL = $(this).attr("action");
 		
 		$.ajax({

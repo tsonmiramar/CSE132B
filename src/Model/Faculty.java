@@ -1,8 +1,5 @@
 package Model;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -38,14 +34,6 @@ public class Faculty {
 	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="dept_id", updatable=false)
 	private DEPARTMENT department;
-	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="faculty")
-	private Collection<Section> sectionTeachList = new HashSet<Section>();
-	
-	@JsonIgnore
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="advisor")
-	private Collection<PhDCandidate> phdAdvisingList = new HashSet<PhDCandidate>();
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -86,14 +74,6 @@ public class Faculty {
 
 	public void setDepartment(DEPARTMENT department) {
 		this.department = department;
-	}
-
-	public Collection<Section> getSectionTeachList() {
-		return sectionTeachList;
-	}
-
-	public void setSectionTeachList(Collection<Section> sectionTeachList) {
-		this.sectionTeachList = sectionTeachList;
 	}
 
 	public Committee getFacultyCommittee() {

@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="GRAD")
 @PrimaryKeyJoinColumn(name="id")
@@ -17,6 +19,7 @@ public class GradStudent extends Student{
 	@JoinColumn(name="dept_id",updatable=false)
 	private DEPARTMENT department;
 	
+	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinTable(name="COMMITTEE_GRAD",
 			joinColumns = {@JoinColumn(name = "grad_id")},

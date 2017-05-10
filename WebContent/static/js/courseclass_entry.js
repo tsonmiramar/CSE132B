@@ -56,9 +56,9 @@ $('document').ready(function(){
 					'id': $('#course_id option:selected').val(),
 				},
 				'title': $('#title').val(),
-				'quarterList':[{
+				'quarter':{
 					'id': $('#quarter_id option:selected').val()
-				}],
+				},
 				'sectionList': [],
 		};
 		

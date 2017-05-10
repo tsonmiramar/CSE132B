@@ -6,20 +6,14 @@ import java.util.HashSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Parameter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,30 +24,23 @@ import lombok.Setter;
 @Setter
 public class CourseClass {
 	
-	@GenericGenerator(name="gen", strategy="foreign", 
-			parameters={@Parameter(name="property", value="course")})
 	@Id
-	@Column(name="id", unique=true, nullable=false)
-	@GeneratedValue(generator="gen")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 	
-	@OneToOne
-	@PrimaryKeyJoinColumn
+	@ManyToOne
+	@JoinColumn(name="course_id")
 	private Course course;
 	
 	@Column(name="title")
 	private String title;
 	
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(name="CLASS_QUARTER",
-			joinColumns = { @JoinColumn(name = "class_id", nullable = false)},
-			inverseJoinColumns = { @JoinColumn(name = "quarter_id", nullable = false)}
-			)
-	private Collection<Quarter> quarterList = new HashSet<Quarter>();
+	@ManyToOne
+	@JoinColumn(name="quarter_id")
+	private Quarter quarter;
 
-	@OneToMany(mappedBy="sectionClass", cascade=CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@OneToMany( fetch=FetchType.EAGER, mappedBy="sectionClass", cascade=CascadeType.ALL)
 	private Collection<Section> sectionList = new HashSet<Section>();
 	
 	public CourseClass() {
@@ -84,12 +71,12 @@ public class CourseClass {
 		this.title = title;
 	}
 
-	public Collection<Quarter> getQuarterList() {
-		return quarterList;
+	public Quarter getQuarter() {
+		return quarter;
 	}
 
-	public void setQuarterList(Collection<Quarter> quarterList) {
-		this.quarterList = quarterList;
+	public void setQuarter(Quarter quarter) {
+		this.quarter = quarter;
 	}
 
 	public Collection<Section> getSectionList() {
