@@ -25,9 +25,15 @@
 <div class="row">
 	<div class="col-md-offset-4 col-md-4">
 		<div class="row">
-				<h3><a href="${pageContext.request.contextPath}/course/entry">Add New Course</a></h3>
-				<h3><a href="${pageContext.request.contextPath}/class/entry">Add New Class</a></h3>
-				<h3><a href="${pageContext.request.contextPath}/student/entry">Add New Student</a></h3>
+			<c:forTokens var="identity" items="course,class,student,faculty,committee,degree" delims=",">
+					<h3><a href="${pageContext.request.contextPath}/${identity}/entry">Add New ${identity}</a></h3>
+			</c:forTokens>
+			
+			<h3><a href="${pageContext.request.contextPath}/class/enrollment/entry">Add New Course Enrollment</a></h3>
+			<h3><a href="${pageContext.request.contextPath}/class/pastenrollment/entry">Add Course Taken in the past</a></h3>
+			<h3><a href="${pageContext.request.contextPath}/student/probation/entry">Add New Probation</a></h3>
+			<h3><a href="${pageContext.request.contextPath}/section/meeting/reviewsession/entry">Add New Review Session</a></h3>
+							
 		</div>	
 	</div>
 </div>

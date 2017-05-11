@@ -26,9 +26,8 @@
 						</select>
 					</div>
 				</div>
-				
+				<label>Probation</label>
 				<div class="form-group row">
-					<label>Probation</label>
 					<c:forTokens var="dest" items="From,To" delims=",">
 						<div class="col-md-3">
 							<label>${dest}</label>
@@ -46,8 +45,8 @@
 					</c:forTokens>
 				</div>	
 				
+				<label>Reason:</label>
 				<div class="form-group row">
-					<label>Reason:</label>
 					<div class="col-md-12">
 						<textarea rows="5" class="form-control" id="reason"></textarea>
 					</div>
