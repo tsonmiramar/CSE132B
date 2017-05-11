@@ -9,4 +9,6 @@ public interface ICourseRepository {
 	public List<Course> getAllCourse();
 	
 	public void insertCourse(Course course);
+
+	List<Course> getAllCourseByDepartment(int id);
 }

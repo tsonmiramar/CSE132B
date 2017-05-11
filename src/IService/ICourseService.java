@@ -18,4 +18,6 @@ public interface ICourseService {
 	void insertCourseEnrollment(Enrollment enrollment);
 
 	List<CourseClass> getAllCourseClassByQuarter(int quarter_id);
+
+	List<Course> getAllCourseByDepartment(int id);
 }

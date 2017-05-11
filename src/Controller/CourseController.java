@@ -8,12 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import Model.*;
+import Model.Course;
+import Model.CourseExtraOption;
+import Model.CourseSubject;
+import Model.CourseUnitNumber;
 import Service.CourseService;
 
 @Controller
@@ -41,6 +45,20 @@ public class CourseController {
 		return "course_entry";
 		
 	}
+	
+	@GetMapping("/department/{dept_id}/list")
+	@ResponseBody 
+	public ResponseEntity<List<Course>> addCourse(@PathVariable int dept_id){
+		try {
+			
+			List<Course> courseList = this.courseService.getAllCourseByDepartment(dept_id);
+			return new ResponseEntity<>(courseList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+}
 	
 	@PostMapping("/add")
 	@ResponseBody

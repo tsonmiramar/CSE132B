@@ -70,4 +70,10 @@ public class CourseService implements ICourseService{
 	public List<CourseClass> getAllCourseClassByQuarter(int quarter_id) {	
 		return this.courseClassRepository.getAllCourseClassByQuarter(quarter_id);
 	}
+
+	@Override
+	@Transactional
+	public List<Course> getAllCourseByDepartment(int id) {
+		return this.courseRepository.getAllCourseByDepartment(id);
+	}
 }
