@@ -1,6 +1,8 @@
 package Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+
+import Model.CourseClass;
 import Model.Faculty;
 import Model.ReviewSession;
 import Service.CourseService;
@@ -45,6 +50,16 @@ public class SectionController {
 	
 	@GetMapping("/meeting/reviewsession/entry")
 	public String getReviewSessionPage(Model model){
+		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(57); //Spring 2017
+		Map<Integer,Object> courseClassMap = new HashMap<Integer,Object>();
+		for ( CourseClass elem : courseClassList ){
+			courseClassMap.put(elem.getId(), elem);
+		}
+		
+		Gson jsonObj = new Gson();
+		String courseClassJSON = jsonObj.toJson(courseClassMap);
+		model.addAttribute("courseClassList",courseClassList);
+		model.addAttribute("courseClassJSON",courseClassJSON);
 		return "reviewsession_entry";
 	}
 	

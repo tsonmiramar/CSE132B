@@ -16,12 +16,23 @@
 		<div class="col-md-offset-3 col-md-6">
 			<form method="POST" action="${pageContext.request.contextPath}/section/meeting/reviewsession/add" id="reviewsession_entryForm">
 				<div class="form-group row">
-					<c:forTokens var="identity" items="class,section" delims=",">
-						<div class="col-md-3">
-							<label style="text-transform:capitalize">${identity}</label>
-							<select class="form-control" id="${identity}"></select>
-						</div>
-					</c:forTokens>
+					<div class="col-md-4">
+						<label style="text-transform:capitalize">class</label>
+						<select class="form-control" id="class">
+							<c:forEach items="${courseClassList}" var="courseClass">
+								<option value="${courseClass.id}">${courseClass.course.courseSubject.symbol} ${courseClass.course.courseUnitNumber.currNum}</option>
+							</c:forEach>
+						</select>
+					</div>
+					
+					<div class="col-md-4">
+						<label style="text-transform:capitalize">section</label>
+						<select class="form-control" id="section">
+							<c:forEach var="section" items="${courseClassList[0].sectionList}">
+								<option value="${section.id}">${section.id}</option>
+							</c:forEach>
+						</select>
+					</div>
 					
 					<div class="col-md-4">
 						<label>Review Date</label>
@@ -36,4 +47,7 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	var courseClassJSON = ${courseClassJSON}; 
+</script>
 </html>
