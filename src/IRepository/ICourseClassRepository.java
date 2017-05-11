@@ -13,5 +13,5 @@ public interface ICourseClassRepository {
 
 	void insertEnrollment(Enrollment enrollment);
 
-	List<CourseClass> getAllCourseClassByQuarter(String quarter, int year);
+	List<CourseClass> getAllCourseClassByQuarter(int quarter_id);
 }

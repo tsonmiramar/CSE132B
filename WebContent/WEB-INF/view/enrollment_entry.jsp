@@ -19,7 +19,11 @@
 					<c:forTokens var="identity" items="student" delims=",">
 						<div class="col-md-6">
 							<label style="text-transform:capitalize">${identity }</label>
-							<select class="form-control" id="${identity}"></select>
+							<select class="form-control" id="${identity}">
+								<c:forEach var="student" items="${studentList}">
+									<option value="${student.id}">${student.firstname} ${student.lastname} ${student.middlename}</option>
+								</c:forEach>
+							</select>
 						</div>
 					</c:forTokens>
 					
@@ -29,13 +33,24 @@
 					</div>
 				</div>
 				
-				<div class="form-group row">
-					<c:forTokens var="identity" items="class,section" delims=",">		
-						<div class="col-md-4">
-							<label style="text-transform:capitalize">${identity}</label>
-							<select class="form-control" id="${identity}"></select>
-						</div>
-					</c:forTokens>
+				<div class="form-group row">	
+					<div class="col-md-4">
+						<label style="text-transform:capitalize">class</label>
+						<select class="form-control" id="class">
+							<c:forEach items="${courseClassList}" var="courseClass">
+								<option value="${courseClass.id}">${courseClass.course.courseSubject.symbol} ${courseClass.course.courseUnitNumber.currNum}</option>
+							</c:forEach>
+						</select>
+					</div>
+					
+					<div class="col-md-4">
+						<label style="text-transform:capitalize">section</label>
+						<select class="form-control" id="section">
+							<c:forEach var="section" items="${courseClassList[0].sectionList}">
+								<option value="${section.id}">${section.id}</option>
+							</c:forEach>
+						</select>
+					</div>
 					
 					<div class="col-md-4" id="unitDiv">
 						<label>Unit</label>
@@ -48,4 +63,9 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	var courseClassJSON = ${courseClassJSON}; 
+	var key = Object.keys(courseClassJSON)[0];
+	displayUnitInput(courseClassJSON[key]);
+</script>
 </html>

@@ -67,7 +67,7 @@ public class CourseService implements ICourseService{
 	
 	@Override
 	@Transactional
-	public List<CourseClass> getAllCourseClassByQuarter(String quarter, int year) {	
-		return this.courseClassRepository.getAllCourseClassByQuarter(quarter,year);
+	public List<CourseClass> getAllCourseClassByQuarter(int quarter_id) {	
+		return this.courseClassRepository.getAllCourseClassByQuarter(quarter_id);
 	}
 }

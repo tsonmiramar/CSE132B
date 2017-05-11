@@ -56,7 +56,7 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 	}
 	
 	@Override
-	public List<CourseClass> getAllCourseClassByQuarter(String quarter, int year) {
+	public List<CourseClass> getAllCourseClassByQuarter(int quarter_id) {
 		Session session = sessionFactory.getCurrentSession();	
 		
 		@SuppressWarnings("unchecked")
@@ -64,12 +64,9 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 				 "select c.id, cs.symbol, cu.currNum, cu.unitFrom, cu.unitTo from CLASS c "
 				+"join COURSE cu on c.course_id = cu.id "
 				+"join COURSE_SUBJECT cs on cu.subject_id = cs.subject_id "
-				+"join QUARTER q on c.quarter_id = q.id "
-				+"join QUARTER_NAME qn on q.name_id = qn.id "
-				+"where qn.name=:quarter and q.year = :year"
+				+"where c.quarter_id=:quarter_id"
 				)
-				.setParameter("quarter", quarter)
-				.setParameter("year", year)
+				.setParameter("quarter_id", quarter_id)
 				.getResultList();
 		
 		List<CourseClass> courseClassList = new ArrayList<CourseClass>();
