@@ -65,6 +65,23 @@ public class CourseClassController {
 		}
 	}
 	
+	@GetMapping("/quarter/{name}/{year}/list")
+	@ResponseBody
+	public ResponseEntity<Map<Integer,Object>> getAllCourseClassByQuarter(@PathVariable String quarter, @PathVariable int year){
+		try {
+			List<CourseClass> courseClassList = this.courseService.getAllCourseClassByQuarter(quarter,year);
+			Map<Integer,Object> courseClassJSON = new HashMap<Integer,Object>();
+			for ( CourseClass courseClass : courseClassList){
+				courseClassJSON.put(courseClass.getId(), courseClass);
+			}
+			return new ResponseEntity<>(courseClassJSON,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Void> addCourseClass(@RequestBody CourseClass courseClass){
@@ -81,7 +98,7 @@ public class CourseClassController {
 	@GetMapping("/enrollment/entry")
 	public String getEnrollmentEntry(Model model){
 		List<Student> studentList = studentService.getAllStudent();
-		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(57); //Spring 2017
+		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter("SPRING",2017); //Spring 2017
 		Map<Integer,Object> courseClassMap = new HashMap<Integer,Object>();
 		for ( CourseClass elem : courseClassList ){
 			courseClassMap.put(elem.getId(), elem);

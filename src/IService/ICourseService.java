@@ -20,4 +20,6 @@ public interface ICourseService {
 	List<CourseClass> getAllCourseClassByQuarter(int quarter_id);
 
 	List<Course> getAllCourseByDepartment(int id);
+
+	List<CourseClass> getAllCourseClassByQuarter(String string, int year);
 }

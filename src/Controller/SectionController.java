@@ -50,7 +50,7 @@ public class SectionController {
 	
 	@GetMapping("/meeting/reviewsession/entry")
 	public String getReviewSessionPage(Model model){
-		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(57); //Spring 2017
+		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter("SPRING",2017);
 		Map<Integer,Object> courseClassMap = new HashMap<Integer,Object>();
 		for ( CourseClass elem : courseClassList ){
 			courseClassMap.put(elem.getId(), elem);

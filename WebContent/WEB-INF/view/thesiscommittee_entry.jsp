@@ -16,13 +16,21 @@
 		<div class="col-md-offset-3 col-md-6">
 			<form method="POST" action="${pageContext.request.contextPath}/committee/add" id="thesiscommittee_entryForm">	
 				<div class="form-group row">
-						<label>Student</label>
-						<select class="form-control" id="student"></select>
+					<label>Student</label>
+					<select class="form-control" id="student">
+						<c:forEach var="student" items="${gradList}">
+							<option value="${student.id}">${student.firstname} ${student.lastname} ${student.middlename}</option>
+						</c:forEach>
+					</select>
 				</div>
 				
 				<div class="form-group row" id="committeeGrad">
 						<label>Thesis Committee</label>
-						<select id="faculty" class="form-control"></select>
+						<select id="faculty" class="form-control">
+							<c:forEach var="faculty" items="${facultyList}">
+								<option value="${faculty.id}">${faculty.name},${faculty.title}</option>
+							</c:forEach>
+						</select>
 						<button type="button" class="btn btn-primary" id="AddFacultyBtn">Add Faculty</button>
 						<div id="GradCommitteeList"><!-- populated with faculty --></div>
 				</div>
@@ -33,11 +41,19 @@
 					</div>
 					<div class="form-group row">		
 						<label>Department</label>
-						<select id="department" class="form-control"></select>
+						<select id="department" class="form-control">
+							<c:forEach var="department" items="${departmentList}">
+								<option value="${department.id}">${department.name}</option>
+							</c:forEach>
+						</select>
 					</div>	
 					<div class="form-group row">
 						<label>Faculty</label>
-						<select id="faculty" class="form-control"></select>
+						<select id="faculty" class="form-control">
+							<c:forEach var="faculty" items="${facultyList2}">
+								<option value="${faculty.id}">${faculty.name},${faculty.title}</option>
+							</c:forEach>
+						</select>
 						<button type="button" class="btn btn-primary" id="AddFacultyBtn">Add Faculty</button>							
 						<div id="PhDCommitteeList"><!-- populated with faculty --></div>
 					</div>
@@ -48,4 +64,9 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript">
+	var phdCandidateJSON = ${phdJSON};
+	var gradStudentJSON = ${gradJSON};
+	console.log( gradStudentJSON );
+</script>
 </html>

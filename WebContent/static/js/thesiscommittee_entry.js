@@ -13,7 +13,7 @@ var appendStudentItem = function(selector, itemList){
 var appendFacultyItem = function(selector, itemList){
 	selector.empty();
 	for ( var idx in itemList ){
-		var text = itemList[idx].name;
+		var text = itemList[idx].name + "," + itemList[idx].title;
 		var value = itemList[idx].id;
 		var option = new Option(text,value);
 		
@@ -21,100 +21,11 @@ var appendFacultyItem = function(selector, itemList){
 	}
 }
 
-var appendDepartmentSelectItem =function(selector,itemList){
+var appendDepartmentSelectItem = function(selector,itemList){
 	appendFacultyItem(selector,itemList);
 }
 
-var toStudentJSON = function(itemList){
-	var studentJSON = {};
-	for ( var idx in itemList) {
-		var id = itemList[idx].id.toString();
-		studentJSON[id] = itemList[idx];
-	}
-	
-	return studentJSON;
-}
-
 $('document').ready(function(){
-	var gradStudentJSON = {};
-	var phdCandidateJSON = {};
-	var departmentList = [];
-	
-	//Retrive Grad student list
-	$.ajax({
-		url:contextPath+"/student/grad/list",
-		type: "GET",
-		headers: {
-			'Content-Type':'application/json'
-		},
-		success: function(data, textStatus){
-			console.log("grad student list retrieved");
-			appendStudentItem($("#student"),data);
-			gradStudentJSON = toStudentJSON(data);
-			
-			//Retrieve PHD Candidate list
-			$.ajax({
-				url:contextPath+"/student/phd/list",
-				type: "GET",
-				headers: {
-					'Content-Type':'application/json'
-				},
-				success: function(data, textStatus){
-					console.log("phd candidate list retrieved");
-					phdCandidateJSON = toStudentJSON(data);
-					
-					if ( phdCandidateJSON[$("#student option:selected").val()] !== undefined ){
-						$("#committeePhD").show();
-					}
-					else {
-						$("#committeePhD").hide();
-					}
-					
-					//Retrieve Department List
-					$.ajax({
-						url:contextPath+"/department/list",
-						type: "GET",
-						headers: {
-							'Content-Type':'application/json'
-						},
-						success: function(data, textStatus){
-							console.log("department list retrieved");
-							departmentList = data;
-							appendDepartmentSelectItem($("#committeePhD").find("#department"),departmentList);
-							
-							var dept_id = $("#committeePhD").find("#department option:selected").val();
-							//Initialize faculty by department
-							$.ajax({
-								url:contextPath+"/faculty/list/department/"+dept_id,
-								type: "GET",
-								headers: {
-									'Content-Type':'application/json'
-								},
-								success: function(data, textStatus){
-									console.log("faculty list by department retrieved");
-									appendFacultyItem($("#committeePhD").find("#faculty"),data);
-								},
-								error: function(data, textStatus){
-									alert("Failed to retrieve faculty list by department. Please refresh page");
-								}
-							});
-						},
-						error: function(data, textStatus){
-							alert("Failed to retrieve phd candidate list. Please refresh page");
-						}
-					});
-				},
-				error: function(data, textStatus){
-					alert("Failed to retrieve phd candidate list. Please refresh page");
-				}
-			});
-				
-		},
-		error: function(data, textStatus){
-			alert("Failed to retrieve grad student list. Please refresh page");
-		}
-	});
-	
 	
 	//Adding Faculty event handler
 	$("#AddFacultyBtn").on('click',function(){
