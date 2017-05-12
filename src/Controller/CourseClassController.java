@@ -42,7 +42,9 @@ public class CourseClassController {
 	@GetMapping("/entry")
 	public String getCourseClassEntryPage(Model model){
 		List<Course> courseList = courseService.getAllCourse();	
+		List<Quarter> quarterList = quarterService.getAllQuarter();
 		model.addAttribute("courseList", courseList);
+		model.addAttribute("quarterList", quarterList);
 		return "courseclass_entry";
 	}
 	
