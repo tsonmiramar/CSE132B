@@ -1,5 +1,6 @@
 var computeQuarterList = function(quarterFrom,yearFrom,quarterTo,yearTo,quarterJSON,quarterNameJSON){
-	var quarter_id = quarterFrom - 1; //index 0 1 2 from quarterFrom val 1 2 3
+	var quarter_id = (quarterFrom - 1) % 3; //index 0 1 2 from quarterFrom val 1 2 3
+	quarterTo = (quarterTo -1) % 3;
 	var year = yearFrom
 	var quarterAttendList = [];
 	
@@ -7,7 +8,7 @@ var computeQuarterList = function(quarterFrom,yearFrom,quarterTo,yearTo,quarterJ
 		var quarterItem = {};
 		
 		var quarterName = quarterNameJSON[(quarter_id+1).toString()];
-		if ( quarterJSON[quarterName][year] !== undefined){
+		if ( Object.keys(quarterJSON).length > 0 && quarterJSON[quarterName][year] !== undefined){
 			quarterItem["id"] = quarterJSON[quarterName][year];
 		}
 		else {
@@ -19,7 +20,7 @@ var computeQuarterList = function(quarterFrom,yearFrom,quarterTo,yearTo,quarterJ
 		
 		quarterAttendList.push(quarterItem);
 		
-		if ( year === yearTo && quarter_id === ( quarterTo -1 )) break;
+		if ( year === yearTo && quarter_id === quarterTo) break;
 		
 		year = quarter_id === 0 ? year + 1 : year;
 		quarter_id = (quarter_id + 1) % 3;

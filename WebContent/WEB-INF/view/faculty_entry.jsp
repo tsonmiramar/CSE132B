@@ -19,7 +19,18 @@
 					<c:forTokens var="identity" items="name,title" delims=",">
 						<div class="col-md=4">
 							<label style="text-transform:capitalize">${identity}</label>
-							<input class="form-control" type="text" id="${identity}"/>
+							<c:choose>
+								<c:when test="${identity == 'title'}">
+									<select class="form-control" id="${identity}">
+										<c:forTokens items="Lecturer,Assistant Professor,Associate Professor,Professor" delims="," var="title" varStatus="loop">
+											<option value="${loop.index}">${title}</option>
+										</c:forTokens>
+									</select>
+								</c:when>
+								<c:otherwise>
+									<input class="form-control" type="text" id="${identity}"/>	
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</c:forTokens>
 				</div>

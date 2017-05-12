@@ -11,6 +11,15 @@ $('document').ready(function(){
 	
 	//Retrieve College List
 	var collegeList = [];
+	//Retrieve Department List
+	var departmentList = [];
+	//Retrive Quarter Name List
+	var quarterNameJSON = {};
+	//Retrieve Faculty List
+	var facultyList = [];
+	//Retrive Quarter List
+	var quarterJSON = {};
+	
 	$.ajax({
 		url:contextPath+"/college/list",
 		type: "GET",
@@ -20,89 +29,80 @@ $('document').ready(function(){
 		success: function(data, textStatus){
 			console.log("college list retrieved");
 			collegeList = data;
+			
+			$.ajax({
+				url:contextPath+"/department/list",
+				type: "GET",
+				headers: {
+					'Content-Type':'application/json'
+				},
+				success: function(data, textStatus){
+					console.log("department list retrieved");
+					departmentList = data;
+					
+					//Load default undergrad entry
+					$('#SubStudentEntry').load(contextPath+"/student/undergrad/entry",function(){
+						appendSelectItem($("#SubStudentEntry").find("#college"),collegeList);
+						appendSelectItem($("#SubStudentEntry").find("#major"),departmentList);
+						appendSelectItem($("#SubStudentEntry").find("#minor"),departmentList);
+					});
+					
+					$.ajax({
+						url:contextPath+"/quarter/quarterName/list",
+						type: "GET",
+						headers: {
+							'Content-Type':'application/json'
+						},
+						success: function(data, textStatus){
+							console.log("quarter name list retrieved");
+							quarterNameJSON = toQuarterNameJSONMapping(data);
+							
+							$.ajax({
+								url:contextPath+"/quarter/list",
+								type: "GET",
+								headers: {
+									'Content-Type':'application/json'
+								},
+								success: function(data, textStatus){
+									console.log("quarter list retrieved");
+									//Convert QuarterList to JSON Mapping
+									quarterJSON = toQuarterJSONMapping(data);
+									
+									$.ajax({
+										url:contextPath+"/faculty/list",
+										type: "GET",
+										headers: {
+											'Content-Type':'application/json'
+										},
+										success: function(data, textStatus){
+											console.log("faculty list retrieved");
+											facultyList = data;
+										},
+										error: function(data, textStatus){
+											alert("Failed to retrieve faculty list. Please refresh page");
+										}
+									});
+								},
+								error: function(data, textStatus){
+									alert("Failed to retrieve quarter list. Please refresh page");
+								}
+							});
+						},
+						error: function(data, textStatus){
+							alert("Failed to retrieve quarter name list. Please refresh page");
+						}
+					});
+				},
+				error: function(data, textStatus){
+					alert("Failed to retrieve department list. Please refresh page");
+				}
+			});
 		},
 		error: function(data, textStatus){
 			alert("Failed to retrieve college list. Please refresh page");
 		}
 	});
 	
-	//Retrieve Department List
-	var departmentList = [];
-	$.ajax({
-		url:contextPath+"/department/list",
-		type: "GET",
-		headers: {
-			'Content-Type':'application/json'
-		},
-		success: function(data, textStatus){
-			console.log("department list retrieved");
-			departmentList = data;
-		},
-		error: function(data, textStatus){
-			alert("Failed to retrieve department list. Please refresh page");
-		}
-	});
-	
-	//Retrieve Faculty List
-	var facultyList = [];
-	$.ajax({
-		url:contextPath+"/faculty/list",
-		type: "GET",
-		headers: {
-			'Content-Type':'application/json'
-		},
-		success: function(data, textStatus){
-			console.log("faculty list retrieved");
-			facultyList = data;
-		},
-		error: function(data, textStatus){
-			alert("Failed to retrieve faculty list. Please refresh page");
-		}
-	});
-	
-	//Retrive Quarter Name List
-	var quarterNameJSON = {};
-	$.ajax({
-		url:contextPath+"/quarter/quarterName/list",
-		type: "GET",
-		headers: {
-			'Content-Type':'application/json'
-		},
-		success: function(data, textStatus){
-			console.log("quarter name list retrieved");
-			quarterNameJSON = toQuarterNameJSONMapping(data);
-		},
-		error: function(data, textStatus){
-			alert("Failed to retrieve quarter name list. Please refresh page");
-		}
-	});
-	
-	//Retrive Quarter List
-	var quarterJSON = {};
-	$.ajax({
-		url:contextPath+"/quarter/list",
-		type: "GET",
-		headers: {
-			'Content-Type':'application/json'
-		},
-		success: function(data, textStatus){
-			console.log("quarter list retrieved");
-			//Convert QuarterList to JSON Mapping
-			quarterJSON = toQuarterJSONMapping(data);
-		},
-		error: function(data, textStatus){
-			alert("Failed to retrieve quarter list. Please refresh page");
-		}
-	});
-	
-	//Load default undergrad entry
-	$('#SubStudentEntry').load(contextPath+"/student/undergrad/entry",function(){
-		appendSelectItem($("#SubStudentEntry").find("#college"),collegeList);
-		appendSelectItem($("#SubStudentEntry").find("#major"),departmentList);
-		appendSelectItem($("#SubStudentEntry").find("#minor"),departmentList);
-	});
-	
-	//Retrieve 
 	//Handle Student Type event
 	$('#studentType').on('click',"input[type='radio']",function(){
 		

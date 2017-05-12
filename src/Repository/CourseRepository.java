@@ -53,7 +53,7 @@ public class CourseRepository extends BaseRepository implements ICourseRepositor
 
 	@Override
 	public List<Course> getAllCourseByDepartment(int id) {
-Session session = this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		
 		String sql = "select c.id, cs.symbol, c.currNum from COURSE c "
 				+ "		join COURSE_SUBJECT cs "

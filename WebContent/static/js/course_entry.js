@@ -63,7 +63,7 @@ $('document').ready(function(){
 		
 		course['courseOption'] = {
 				'letter_option' : $("#letterOpt").val(),
-				'SU_option': $("#SUOpt").val(),
+				'su_option': $("#SUOpt").val(),
 				'labwork': $("#labwork").val(),
 				'instructor_consent': $('#instConsent').val()
 		};
@@ -100,8 +100,5 @@ $('document').ready(function(){
 			}
 		});	
 		
-		//Clear Form after submit
-		$(':input').not(':button, :submit, :reset, :hidden, :checkbox, :radio, :select').val("");
-		$(':checkbox, :radio').prop('checked',false);
 	});
 });

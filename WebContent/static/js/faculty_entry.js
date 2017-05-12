@@ -6,7 +6,7 @@ $('document').ready(function(){
 		
 		var faculty = {
 				'name' : $("#name").val(),
-				'title': $("#title").val(),
+				'title': $("#title option:selected").text(),
 				'department': {
 					'id': $("#department option:selected").val()
 				}

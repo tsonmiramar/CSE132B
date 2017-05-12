@@ -10,7 +10,7 @@ public class CourseExtraOption {
 	private boolean letter_option;
 	
 	@Column(name="SU_option")
-	private boolean SU_option;
+	private boolean su_option;
 	
 	@Column(name="labwork")
 	private boolean labwork;
@@ -26,12 +26,15 @@ public class CourseExtraOption {
 	public void setLetter_option(boolean letter_option) {
 		this.letter_option = letter_option;
 	}
-	public boolean isSU_option() {
-		return SU_option;
+	
+	public boolean isSu_option() {
+		return su_option;
 	}
-	public void setSU_option(boolean sU_option) {
-		SU_option = sU_option;
+
+	public void setSu_option(boolean su_option) {
+		this.su_option = su_option;
 	}
+
 	public boolean isLabwork() {
 		return labwork;
 	}
@@ -44,12 +47,4 @@ public class CourseExtraOption {
 	public void setInstructor_consent(boolean instructor_consent) {
 		this.instructor_consent = instructor_consent;
 	}
-
-	@Override
-	public String toString() {
-		return "CourseExtraOption [letter_option=" + letter_option + ", SU_option=" + SU_option + ", labwork=" + labwork
-				+ ", instructor_consent=" + instructor_consent + "]";
-	}
-	
-	
 }
