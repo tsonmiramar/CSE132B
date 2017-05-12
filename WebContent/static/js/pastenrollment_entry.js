@@ -117,13 +117,14 @@ var displayUnitInput = function(classObj){
 }
 
 var displayGradeInputType = function(class_id){
+	$("#gradeDiv #gradeInputType").empty();
 	if ( courseClassJSON[class_id].course.courseOption.letter_option == true ){
-		$("#gradeInputType").html("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
+		$("#gradeDiv #gradeInputType").append("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
 	}else{
-		$("#gradeInputType").html(
+		$("#gradeDiv #gradeInputType").append(
 				"<select class=\"form-control\" id=\"grade\">"
-			+	"	<option>S<\option> "
-			+	"	<option>U<\option> "
+			+	"	<option>S<\option>"
+			+	"	<option>U<\option>"
 			+	"<\select>"
 		)
 	}

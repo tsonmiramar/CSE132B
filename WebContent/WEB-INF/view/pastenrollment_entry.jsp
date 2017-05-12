@@ -56,7 +56,7 @@
 					<c:forTokens var="identity" items="unit,grade" delims=",">
 						<div class="col-md-3" id="${identity}Div">
 							<label style="text-transform:capitalize">${identity}</label>
-								<div id="gradeInputType">
+							<div id="gradeInputType">
 								<c:choose>
 									<c:when test="${identity == 'unit'}">
 										<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
