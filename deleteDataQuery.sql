@@ -35,3 +35,6 @@ delete from FACULTY;
 delete from QUARTER;
 delete from QUARTER_NAME;
 delete from ENROLLMENT;
+
+delete from PREREQUISITE;
+delete from COURSE;
