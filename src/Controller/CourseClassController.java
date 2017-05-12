@@ -116,7 +116,7 @@ public class CourseClassController {
 	public String getPastEnrollmentEntry(Model model){
 		List<Student> studentList = studentService.getAllStudent();
 		List<Quarter> quarterList = quarterService.getAllQuarter();
-		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(quarterList.get(0).getId());
+		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(quarterList.isEmpty() ? 0 : quarterList.get(0).getId());
 		Map<Integer,Object> courseClassMap = new HashMap<Integer,Object>();
 		for ( CourseClass elem : courseClassList ){
 			courseClassMap.put(elem.getId(), elem);

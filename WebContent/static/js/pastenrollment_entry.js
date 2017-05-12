@@ -15,6 +15,7 @@ $('document').ready(function(){
 		
 		appendSectionSelectionItem($("#section"),sectionList);
 		displayUnitInput(courseClassJSON[class_id]);
+		displayGradeInputType(class_id);
 	});
 	
 	//Form submission
@@ -84,6 +85,8 @@ var retrieveClassandSection = function(quarter_id){
 				appendSectionSelectionItem($("#section"),itemList);
 				displayUnitInput(data[class_id]);
 			};
+			
+			displayGradeInputType(class_id);
 		},
 		error: function(data, textStatus){
 			alert("Failed to retrieve class list. Please refresh page");
@@ -110,6 +113,19 @@ var displayUnitInput = function(classObj){
 	}
 	else{
 		$("#unitDiv").hide();
+	}
+}
+
+var displayGradeInputType = function(class_id){
+	if ( courseClassJSON[class_id].course.courseOption.letter_option == true ){
+		$("#gradeInputType").html("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
+	}else{
+		$("#gradeInputType").html(
+				"<select class=\"form-control\" id=\"grade\">"
+			+	"	<option>S<\option> "
+			+	"	<option>U<\option> "
+			+	"<\select>"
+		)
 	}
 }
 /****************** FINISH HELPER FUNCTION ***************/

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import IRepository.ICourseClassRepository;
 import Model.Course;
 import Model.CourseClass;
+import Model.CourseExtraOption;
 import Model.CourseSubject;
 import Model.CourseUnitNumber;
 import Model.Discussion;
@@ -61,7 +62,7 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "select c.id, cs.symbol, cu.currNum, cu.unitFrom, cu.unitTo from CLASS c "
+				 "select c.id, cs.symbol, cu.currNum, cu.unitFrom, cu.unitTo,cu.letter_option, cu.SU_option from CLASS c "
 				+"join COURSE cu on c.course_id = cu.id "
 				+"join COURSE_SUBJECT cs on cu.subject_id = cs.subject_id "
 				+"where c.quarter_id=:quarter_id"
@@ -81,6 +82,9 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 			courseClass.getCourse().getCourseUnitNumber().setCurrNum((String)obj[2]);
 			courseClass.getCourse().getCourseUnitNumber().setUnitFrom((Integer)obj[3]);
 			courseClass.getCourse().getCourseUnitNumber().setUnitTo((Integer)obj[4]);
+			courseClass.getCourse().setCourseOption(new CourseExtraOption());
+			courseClass.getCourse().getCourseOption().setLetter_option((Boolean)obj[5]);
+			courseClass.getCourse().getCourseOption().setSu_option((Boolean)obj[6]);
 			courseClass.setSectionList(new ArrayList<Section>());
 			
 			@SuppressWarnings("unchecked")
@@ -105,7 +109,7 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "select c.id, cs.symbol, cu.currNum, cu.unitFrom, cu.unitTo from CLASS c "
+				 "select c.id, cs.symbol, cu.currNum, cu.unitFrom, cu.unitTo, cu.letter_option, cu.SU_option from CLASS c "
 				+"join COURSE cu on c.course_id = cu.id "
 				+"join COURSE_SUBJECT cs on cu.subject_id = cs.subject_id "
 				+"join QUARTER q on q.id = c.quarter_id "
@@ -128,6 +132,10 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 			courseClass.getCourse().getCourseUnitNumber().setCurrNum((String)obj[2]);
 			courseClass.getCourse().getCourseUnitNumber().setUnitFrom((Integer)obj[3]);
 			courseClass.getCourse().getCourseUnitNumber().setUnitTo((Integer)obj[4]);
+			courseClass.getCourse().setCourseOption(new CourseExtraOption());
+			courseClass.getCourse().getCourseOption().setLetter_option((Boolean)obj[5]);
+			courseClass.getCourse().getCourseOption().setSu_option((Boolean)obj[6]);
+			courseClass.setSectionList(new ArrayList<Section>());
 			courseClass.setSectionList(new ArrayList<Section>());
 			
 			@SuppressWarnings("unchecked")

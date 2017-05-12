@@ -56,7 +56,27 @@
 					<c:forTokens var="identity" items="unit,grade" delims=",">
 						<div class="col-md-3" id="${identity}Div">
 							<label style="text-transform:capitalize">${identity}</label>
-							<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
+								<div id="gradeInputType">
+								<c:choose>
+									<c:when test="${identity == 'unit'}">
+										<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
+									</c:when>
+									<c:otherwise>
+										<c:choose>
+											<c:when test="${courseClassList[0].course.courseOption.letter_option == true }">
+												<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}" />
+											</c:when>
+											<c:otherwise>
+												<select class="form-control" id="${identity}">
+													<c:forTokens var="grade" items="S,U" delims=",">
+														<option>${grade}</option>
+													</c:forTokens>
+												</select>
+											</c:otherwise>
+										</c:choose>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
 					</c:forTokens>
 				</div>
