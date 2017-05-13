@@ -10,5 +10,9 @@ public class HomeController {
 	public String showIndexPage(){
 		return "index";
 	}
-
+	
+	@RequestMapping("/report")
+	public String showReportIndexPage(){
+		return "report_index";
+	}
 }

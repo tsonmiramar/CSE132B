@@ -76,5 +76,11 @@ public class StudentService implements IStudentService{
 	public List<GradStudent> getAllGradStudent() {
 		return studentRepository.getAllGradStudent();
 	}
+
+	@Override
+	@Transactional
+	public List<Student> getStudentEnrollByQuarter(String quarter, int year) {
+		return studentRepository.getStudentEnrollByQuarter(quarter,year);
+	}
 	
 }

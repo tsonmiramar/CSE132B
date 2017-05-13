@@ -19,4 +19,6 @@ public interface IStudentRepository {
 	List<PhDCandidate> getAllPhDCandidate();
 
 	List<GradStudent> getAllGradStudent();
+
+	List<Student> getStudentEnrollByQuarter(String quarter, int year);
 }

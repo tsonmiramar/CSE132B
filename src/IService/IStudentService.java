@@ -24,4 +24,6 @@ public interface IStudentService {
 	List<GradStudent> getAllGradStudent();
 
 	void insertCommittee(CommitteeType committee_type);
+
+	List<Student> getStudentEnrollByQuarter(String quarter, int year);
 }

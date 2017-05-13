@@ -118,4 +118,10 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 		}
 		return studentList;
 	}
+
+	@Override
+	public List<Student> getStudentEnrollByQuarter(String quarter, int year) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
