@@ -1,6 +1,7 @@
 package Repository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import Model.CourseSubject;
 import Model.CourseUnitNumber;
 import Model.Discussion;
 import Model.Enrollment;
+import Model.Faculty;
 import Model.NonDiscussion;
 import Model.ReviewSession;
 import Model.Section;
@@ -151,6 +153,49 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 			
 			courseClassList.add(courseClass);
 		}
+		return courseClassList;
+	}
+
+	@Override
+	public List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery(
+				 "select cj.symbol, cs.currNum, e.unit, e.section_id, f.name, s.enroll_limit "
+				+"from ENROLLMENT e "
+				+"join SECTION s on e.section_id = s.id "
+				+"join FACULTY f on s.faculty_id = f.id "
+				+"join CLASS c on s.class_id = c.id "
+				+"join COURSE cs on c.course_id = cs.id "
+				+"join COURSE_SUBJECT cj on cs.subject_id = cj.subject_id "
+				+"where e.student_id = :student_id")
+				.setParameter("student_id", student_id)
+				.getResultList();
+		
+		List<CourseClass> courseClassList = new ArrayList<CourseClass>();
+		
+		for ( Object[] obj : rset ){
+			CourseClass courseClass = new CourseClass();
+			courseClass.setCourse(new Course());
+			courseClass.getCourse().setCourseSubject(new CourseSubject());
+			courseClass.getCourse().getCourseSubject().setSymbol((String)obj[0]);
+			
+			courseClass.getCourse().setCourseUnitNumber(new CourseUnitNumber());
+			courseClass.getCourse().getCourseUnitNumber().setCurrNum((String)obj[1]);
+			courseClass.getCourse().getCourseUnitNumber().setUnitTo((Integer)obj[2]);
+			
+			courseClass.setSectionList(new HashSet<Section>());
+			Section section = new Section();
+			section.setId((Integer)obj[3]);
+			section.setFaculty(new Faculty());
+			section.getFaculty().setName((String)obj[4]);
+			section.setEnrollmentLimit((Integer)obj[5]);
+			courseClass.getSectionList().add(section);
+			
+			courseClassList.add(courseClass);
+		}
+		
 		return courseClassList;
 	}
 }

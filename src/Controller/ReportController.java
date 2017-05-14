@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import Model.CourseClass;
 import Model.Student;
+import Service.CourseService;
 import Service.StudentService;
 
 @Controller
@@ -18,10 +20,15 @@ public class ReportController {
 	@Autowired
 	private StudentService studentService;
 	
+	@Autowired
+	private CourseService courseService;
+	
 	@GetMapping("/classbystudent")
 	public String getClassbyStudentPage(Model model){
-		List<Student> studentList = studentService.getStudentEnrollByQuarter("SPRING",2017);
+		List<Student> studentList = studentService.getAllStudent();
+		List<CourseClass> courseClassList = courseService.getCurrentCourseClassEnrolledByStudentId(studentList.get(0).getId()); 
 		model.addAttribute("studentList", studentList);
+		model.addAttribute("courseClassList", courseClassList);
 		return "classbystudent_report";
 	}
 }

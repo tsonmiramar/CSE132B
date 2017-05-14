@@ -143,4 +143,17 @@ public class CourseClassController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/list/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<CourseClass>> getCurrentCourseClassEnrolledByStudentId(@PathVariable int student_id){
+		try {
+			List<CourseClass> courseClassList = courseService.getCurrentCourseClassEnrolledByStudentId(student_id);
+			return new ResponseEntity<>(courseClassList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

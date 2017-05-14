@@ -121,7 +121,29 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 
 	@Override
 	public List<Student> getStudentEnrollByQuarter(String quarter, int year) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery("select s.id,s.firstname,s.lastname,s.middlename from STUDENT s "
+								 +"join ENROLLMENT e on s.id = e.student_id "
+								 +"join SECTION se on se.id = e.section_id "
+								 +"join CLASS c on se.class_id = c.id "
+								 +"join QUARTER q on q.id = c.quarter_id "
+								 +"join QUARTER_NAME qn on q.name_id = qn.id "
+								 +"where qn.name=:quarter and q.year=:year")
+				.setParameter("quarter", quarter)
+				.setParameter("year", year)
+				.getResultList();
+		
+		List<Student> studentList = new ArrayList<Student>();
+		for ( Object[] obj : rset ){
+			Student student = new Student();
+			student.setId((Integer)obj[0]);
+			student.setFirstname((String)obj[1]);
+			student.setLastname((String)obj[2]);
+			student.setMiddlename((String)obj[2]);
+			studentList.add(student);
+		}
+		return studentList;
 	}
 }
