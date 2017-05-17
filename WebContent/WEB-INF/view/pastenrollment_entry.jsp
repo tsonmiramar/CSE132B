@@ -53,30 +53,40 @@
 							</c:forEach>
 						</select>
 					</div>
-					<c:forTokens var="identity" items="unit,grade" delims=",">
+					<c:forTokens var="identity" items="unit,gradeOption,grade" delims=",">
 						<div class="col-md-3" id="${identity}Div">
-							<label style="text-transform:capitalize">${identity}</label>
-							<div id="gradeInputType">
-								<c:choose>
-									<c:when test="${identity == 'unit'}">
-										<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
-									</c:when>
-									<c:otherwise>
-										<c:choose>
-											<c:when test="${courseClassList[0].course.courseOption.letter_option == true }">
-												<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}" />
-											</c:when>
-											<c:otherwise>
-												<select class="form-control" id="${identity}">
-													<c:forTokens var="grade" items="S,U" delims=",">
-														<option>${grade}</option>
-													</c:forTokens>
-												</select>
-											</c:otherwise>
-										</c:choose>
-									</c:otherwise>
-								</c:choose>
-							</div>
+							<c:choose>
+								<c:when test="${identity == 'unit'}">
+									<label style="text-transform:capitalize">${identity}</label>
+									<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}"/>
+								</c:when>
+								
+								<c:when test="${identity == 'gradeOption'}">
+									<c:if test="${courseClassList[0].course.courseOption.letter_option && courseClassList[0].course.courseOption.su_option}">
+										<label style="text-transform:capitalize">${identity}</label>
+										<select class="form-control" id="${identity}">
+											<option>letter only</option>
+											<option>SU only</option>
+										</select>
+									</c:if>
+								</c:when>
+								
+								<c:otherwise>
+									<label style="text-transform:capitalize">${identity}</label>
+									<c:choose>
+										<c:when test="${courseClassList[0].course.courseOption.letter_option}">
+											<input type="text" class="form-control" id="${identity}" placeholder="Enter ${identity}" />
+										</c:when>
+										<c:otherwise>
+											<select class="form-control" id="${identity}">
+												<c:forTokens var="grade" items="S,U" delims=",">
+													<option>${grade}</option>
+												</c:forTokens>
+											</select>
+										</c:otherwise>
+									</c:choose>
+								</c:otherwise>
+							</c:choose>			
 						</div>
 					</c:forTokens>
 				</div>

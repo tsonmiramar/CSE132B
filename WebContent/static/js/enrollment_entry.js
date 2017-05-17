@@ -98,7 +98,6 @@ var displayGradeOption = function(courseClassObj){
 							 +"<select class=\"form-control\" id=\"gradeOption\">"
 							 +"		<option>letter only</option>"
 							 +"		<option>SU only</option>"
-							 +"		<option>letter or SU</option>"
 							 +"</select>";
 		
 		$("#GradeOptionDiv").append(gradeOptionHTML);

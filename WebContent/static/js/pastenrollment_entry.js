@@ -15,7 +15,28 @@ $('document').ready(function(){
 		
 		appendSectionSelectionItem($("#section"),sectionList);
 		displayUnitInput(courseClassJSON[class_id]);
-		displayGradeInputType(class_id);
+		displayGradeOption(courseClassJSON[class_id]);
+		displayGradeInputType(courseClassJSON[class_id]);
+	});
+	
+	//GradeOption selection event handler
+	$("#gradeOptionDiv").on('change','#gradeOption',function(){
+		var text = $(this).find("option:selected").text();
+		
+		$("#gradeDiv").empty();
+		$("#gradeDiv").append("<label>Grade</label>");
+		if ( text === 'letter only'){
+			$("#gradeDiv").append(
+					"<input type=\"text\" placeHolder=\"Enter grade\" class=\"form-control\" id=\"grade\" />"
+			);
+		}else{
+			$("#gradeDiv").append(
+					"<select class=\"form-control\" id=\"grade\">"
+				+	"	<option>S</option>"
+				+	"	<option>U</option>"
+				+	"<\select>"
+			);
+		}
 	});
 	
 	//Form submission
@@ -29,7 +50,9 @@ $('document').ready(function(){
 				'section': {
 					'id' : $("#section option:selected").val()
 				},
-				'grade': $("#grade").val()
+				'grade': $("#grade").val(),
+				'letter_option': false,
+				'su_option': false
 		}
 
 		var class_id = $("#class option:selected").val();
@@ -39,6 +62,20 @@ $('document').ready(function(){
 		}
 		else{
 			enrollment['unitTaken'] = courseUnitNumber.unitTo;
+		}
+		
+		if ($("#gradeOptionDiv").is(":empty")){
+			enrollment['letter_option'] = courseClassJSON[class_id].course.courseOption.letter_option;
+			enrollment['su_option'] = courseClassJSON[class_id].course.courseOption.letter_option;
+		}
+		else {
+			var option = $("#gradeOptionDiv").find("#gradeOption").find("option:selected").text();
+			if ( option === "letter only"){
+				enrollment['letter_option'] = true;
+			}
+			else{
+				enrollment['su_option'] = true;
+			}
 		}
 		
 		$.ajax({
@@ -68,7 +105,7 @@ var retrieveClassandSection = function(quarter_id){
 			'Content-Type':'application/json'
 		},
 		success: function(data, textStatus){
-			console.log("class list retrieved");
+			console.log("class JSON retrieved");
 			//Initialize select option for class and sectionList
 			$("#class").empty();
 			Object.entries(data).forEach(function([key,value]){
@@ -79,14 +116,20 @@ var retrieveClassandSection = function(quarter_id){
 			courseClassJSON = data;
 			
 			$("#section").empty();
-			if ( Object.keys(data).length > 0 ){
-				var class_id = $("#class option:selected").val()
+			var class_id = $("#class option:selected").val();
+			
+			if ( data[class_id] !== undefined ){
 				var itemList = data[class_id].sectionList;
 				appendSectionSelectionItem($("#section"),itemList);
 				displayUnitInput(data[class_id]);
-			};
-			
-			displayGradeInputType(class_id);
+				displayGradeOption(data[class_id]);
+				displayGradeInputType(data[class_id]);
+			}
+			else {
+				$("#unitDiv").hide();
+				$("#gradeDiv").hide();
+				$("#gradeOptionDiv").hide();
+			}
 		},
 		error: function(data, textStatus){
 			alert("Failed to retrieve class list. Please refresh page");
@@ -105,12 +148,6 @@ var appendSectionSelectionItem = function(selector,sectionList){
 }
 
 var displayUnitInput = function(classObj){
-	if (classObj === undefined){
-		$("#unitDiv").hide();
-		$("gradeDiv").hide();
-		return;
-	}
-	
 	var unitFrom = classObj.course.courseUnitNumber.unitFrom;
 	var unitTo = classObj.course.courseUnitNumber.unitTo;
 	if ( unitFrom != unitTo ){
@@ -122,17 +159,38 @@ var displayUnitInput = function(classObj){
 	}
 }
 
-var displayGradeInputType = function(class_id){
-	$("#gradeDiv #gradeInputType").empty();
-	if ( courseClassJSON[class_id] !== undefined && courseClassJSON[class_id].course.courseOption.letter_option == true ){
-		$("#gradeDiv #gradeInputType").append("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
+var displayGradeInputType = function(classObj){
+	$("#gradeDiv").empty();
+	
+	var letter_option = classObj.course.courseOption.letter_option;
+	
+	$("#gradeDiv").append("<label>Grade</label>");
+	
+	if ( letter_option ){
+		$("#gradeDiv").append("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
 	}else{
-		$("#gradeDiv #gradeInputType").append(
+		$("#gradeDiv").append(
 				"<select class=\"form-control\" id=\"grade\">"
 			+	"	<option>S<\option>"
 			+	"	<option>U<\option>"
 			+	"<\select>"
 		)
+	}
+}
+
+var displayGradeOption = function(courseClassObj){
+	var letter_option = courseClassObj.course.courseOption.letter_option;
+	var su_option = courseClassObj.course.courseOption.su_option;
+	
+	$("#gradeOptionDiv").empty();
+	if ( letter_option && su_option ){
+		var gradeOptionHTML = "<label>Grade Option</label> "
+							 +"<select class=\"form-control\" id=\"gradeOption\">"
+							 +"		<option>letter only</option>"
+							 +"		<option>SU only</option>"
+							 +"</select>";
+		
+		$("#gradeOptionDiv").append(gradeOptionHTML);
 	}
 }
 /****************** FINISH HELPER FUNCTION ***************/
