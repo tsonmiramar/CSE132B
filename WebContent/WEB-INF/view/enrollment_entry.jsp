@@ -34,7 +34,7 @@
 				</div>
 				
 				<div class="form-group row">	
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label style="text-transform:capitalize">class</label>
 						<select class="form-control" id="class">
 							<c:forEach items="${courseClassList}" var="courseClass">
@@ -43,7 +43,7 @@
 						</select>
 					</div>
 					
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label style="text-transform:capitalize">section</label>
 						<select class="form-control" id="section">
 							<c:forEach var="section" items="${courseClassList[0].sectionList}">
@@ -52,9 +52,19 @@
 						</select>
 					</div>
 					
-					<div class="col-md-4" id="unitDiv">
+					<div class="col-md-3" id="unitDiv">
 						<label>Unit</label>
 						<input type="text" class="form-control" id="unit" placeholder="Enter unit taken"/>
+					</div>
+					
+					<div class="col-md-3" id="GradeOptionDiv">
+						<c:if test="${courseClassList[0].course.courseOption.letter_option && courseClassList[0].course.courseOption.su_option}">
+							<label>Grade Option</label>
+							<select class="form-control" id="gradeOption">
+								<option>letter only</option>
+								<option>SU only</option>
+							</select>
+						</c:if>
 					</div>
 				</div>
 				

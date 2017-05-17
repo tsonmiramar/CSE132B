@@ -18,4 +18,6 @@ public interface ICourseClassRepository {
 	List<CourseClass> getAllCourseClassByQuarter(String quarter, int year);
 
 	List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id);
+
+	List<CourseClass> getAllCourseClass();
 }

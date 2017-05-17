@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import IService.IStudentService;
 import Model.CommitteeType;
+import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
@@ -81,6 +82,12 @@ public class StudentService implements IStudentService{
 	@Transactional
 	public List<Student> getStudentEnrollByQuarter(String quarter, int year) {
 		return studentRepository.getStudentEnrollByQuarter(quarter,year);
+	}
+	
+	@Override
+	@Transactional
+	public List<Enrollment> getAllStudentFromClass(int class_id) {
+		return studentRepository.getAllStudentFromClass(class_id);
 	}
 	
 }

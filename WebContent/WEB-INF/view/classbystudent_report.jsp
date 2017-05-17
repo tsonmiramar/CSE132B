@@ -23,40 +23,44 @@
 				</select>
 			</div>
 			
-			<div class="row">
-				<c:forTokens var="item" items="class,unit,section,faculty,limit" delims=",">
-					<div class="col-md-2">
-						<h3 style="text-transform:capitalize">${item}</h3>	
-					</div>
-				</c:forTokens>
-			</div>	
-			
-			<div id="ClassInfoList">
-				<c:forEach var="courseClass" items="${courseClassList}">
-					<div class="row">
-						<div class="col-md-2">
-							<h3>${courseClass.course.courseSubject.symbol} ${courseClass.course.courseUnitNumber.currNum}</h3>	
-						</div>
-						
-						<div class="col-md-2">
-							<h3>${courseClass.course.courseUnitNumber.unitTo}</h3>
-						</div>
-						
-						<div class="col-md-2">
-							<h3>${courseClass.sectionList.toArray()[0].id}</h3>
-						</div>
-						
-						<div class="col-md-2">
-							<h3>${courseClass.sectionList.toArray()[0].faculty.name}</h3>
-						</div>
-						
-						<div class="col-md-2">
-							<h3>${courseClass.sectionList.toArray()[0].enrollmentLimit}</h3>
-						</div>
-					</div>
-				</c:forEach>	
-			</div>
 		</div>
+	</div>
+	
+	<div class="row">
+		<c:forTokens var="item" items="class,title,unit,section,faculty,limit" delims=",">
+			<div class="col-md-2">
+				<h3 style="text-transform:capitalize">${item}</h3>	
+			</div>
+		</c:forTokens>
+	</div>	
+			
+	<div id="ClassInfoList">
+		<c:forEach var="courseClass" items="${courseClassList}">
+			<div class="row">
+				<div class="col-md-2">
+					<h3>${courseClass.course.courseSubject.symbol} ${courseClass.course.courseUnitNumber.currNum}</h3>	
+				</div>
+				
+				<div class="col-md-2">
+					<h3>${courseClass.title}</h3>
+				</div>
+				<div class="col-md-2">
+					<h3>${courseClass.course.courseUnitNumber.unitTo}</h3>
+				</div>
+				
+				<div class="col-md-2">
+					<h3>${courseClass.sectionList.toArray()[0].id}</h3>
+				</div>
+				
+				<div class="col-md-2">
+					<h3>${courseClass.sectionList.toArray()[0].faculty.name}</h3>
+				</div>
+				
+				<div class="col-md-2">
+					<h3>${courseClass.sectionList.toArray()[0].enrollmentLimit}</h3>
+				</div>
+			</div>
+		</c:forEach>	
 	</div>
 </body>
 </html>

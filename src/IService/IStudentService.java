@@ -3,6 +3,7 @@ package IService;
 import java.util.List;
 
 import Model.CommitteeType;
+import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
@@ -26,4 +27,6 @@ public interface IStudentService {
 	void insertCommittee(CommitteeType committee_type);
 
 	List<Student> getStudentEnrollByQuarter(String quarter, int year);
+
+	List<Enrollment> getAllStudentFromClass(int class_id);
 }

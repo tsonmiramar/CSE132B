@@ -19,6 +19,11 @@ $('document').ready(function(){
 					+	"		<h3>"+elem.course.courseSubject.symbol+" "+elem.course.courseUnitNumber.currNum+"</h3>"
 					+	"	</div>";
 					
+					var titleDiv =
+						"	<div class=\"col-md-2\">"
+					+	"		<h3>"+elem.title+"</h3>"
+					+	"	</div>";
+					
 					var unitDiv =
 						"	<div class=\"col-md-2\">"
 					+	"		<h3>"+elem.course.courseUnitNumber.unitTo+"</h3>"
@@ -41,12 +46,12 @@ $('document').ready(function(){
 					
 					var row = $("<div class=\"row\"></div>");
 					row.append(classNameDiv);
+					row.append(titleDiv);
 					row.append(unitDiv);
 					row.append(sectionDiv);
 					row.append(facultyDiv);
 					row.append(enrollDiv);
 					
-					console.log(row);
 					$("#ClassInfoList").append($(row));
 				}
 			},

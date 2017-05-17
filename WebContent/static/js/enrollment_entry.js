@@ -7,6 +7,8 @@ $('document').ready(function(){
 		retrieveSectionList($("#section"),itemList);
 		
 		displayUnitInput(courseClassJSON[class_id]);
+		
+		displayGradeOption(courseClassJSON[class_id]);
 	});
 	
 	//Form submission
@@ -19,7 +21,9 @@ $('document').ready(function(){
 				},
 				'section': {
 					'id' : $("#section option:selected").val()
-				}
+				},
+				'letter_option': false,
+				'su_option': false
 		}
 
 		var class_id = $("#class option:selected").val();
@@ -29,6 +33,20 @@ $('document').ready(function(){
 		}
 		else{
 			enrollment['unitTaken'] = courseUnitNumber.unitTo;
+		}
+		
+		var courseOption = courseClassJSON[class_id].course.courseOption;
+		if ( $("#GradeOptionDiv").is(":empty") ){
+			enrollment['letter_option'] = courseOption.letter_option;
+			enrollment['su_option'] = courseOption.su_option;
+		}
+		else{
+			if ( $("#GradeOptionDiv").find("#gradeOption option:selected").text() === 'letter only' ){
+				enrollment['letter_option'] = true;
+			}
+			else {
+				enrollment['su_option'] = true;
+			}
 		}
 		
 		$.ajax({
@@ -67,5 +85,22 @@ var displayUnitInput = function(courseClassObj){
 	}
 	else{
 		$("#unitDiv").hide();
+	}
+}
+
+var displayGradeOption = function(courseClassObj){
+	var letter_option = courseClassObj.course.courseOption.letter_option;
+	var su_option = courseClassObj.course.courseOption.su_option;
+	
+	$("#GradeOptionDiv").empty();
+	if ( letter_option && su_option ){
+		var gradeOptionHTML = "<label>Grade Option</label> "
+							 +"<select class=\"form-control\" id=\"gradeOption\">"
+							 +"		<option>letter only</option>"
+							 +"		<option>SU only</option>"
+							 +"		<option>letter or SU</option>"
+							 +"</select>";
+		
+		$("#GradeOptionDiv").append(gradeOptionHTML);
 	}
 }

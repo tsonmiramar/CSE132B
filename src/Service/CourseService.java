@@ -88,4 +88,10 @@ public class CourseService implements ICourseService{
 	public List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id) {
 		return this.courseClassRepository.getCurrentCourseClassEnrolledByStudentId(student_id);
 	}
+
+	@Override
+	@Transactional
+	public List<CourseClass> getAllCourseClass() {
+		return this.courseClassRepository.getAllCourseClass();
+	}
 }

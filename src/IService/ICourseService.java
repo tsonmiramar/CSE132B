@@ -24,4 +24,6 @@ public interface ICourseService {
 	List<CourseClass> getAllCourseClassByQuarter(String string, int year);
 
 	List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id);
+
+	List<CourseClass> getAllCourseClass();
 }

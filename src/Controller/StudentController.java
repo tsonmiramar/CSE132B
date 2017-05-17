@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
@@ -100,6 +101,19 @@ public class StudentController {
 		try {
 			List<Student> studentList = this.studentService.getAllStudent();
 			return new ResponseEntity<>(studentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/class/{class_id}")
+	@ResponseBody
+	public ResponseEntity<List<Enrollment>> getAllStudentFromClass(@PathVariable int class_id){
+		try {
+			List<Enrollment> enrollmentList = studentService.getAllStudentFromClass(class_id);
+			return new ResponseEntity<>(enrollmentList,HttpStatus.OK);
 		}
 		catch (Exception e){
 			e.printStackTrace();

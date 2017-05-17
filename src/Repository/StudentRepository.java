@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import IRepository.IStudentRepository;
 import Model.DEPARTMENT;
+import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
+import Model.ResidentStatus;
 import Model.Student;
 import Model.StudentType;
 
@@ -145,5 +147,44 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 			studentList.add(student);
 		}
 		return studentList;
+	}
+
+	@Override
+	public List<Enrollment> getAllStudentFromClass(int class_id) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery(
+				 "select s.pid, s.firstname, s.lastname, s.middlename, s.ssn, rs.type, e.unit, e.letter_option, e.su_option from ENROLLMENT e "
+				+"join STUDENT s on e.student_id = s.id "
+				+"join RESIDENT_STATUS rs on s.resident_status = rs.id "
+				+"join SECTION sc on e.section_id = sc.id "
+				+"join CLASS c on sc.class_id = c.id "
+				+"where c.id = :class_id "
+				)
+		.setParameter("class_id", class_id)
+		.getResultList();
+		
+		List<Enrollment> enrollmentList = new ArrayList<Enrollment>();
+		
+		for ( Object[] obj : rset ){
+			Enrollment enrollment = new Enrollment();
+			
+			enrollment.setStudent(new Student());
+			enrollment.getStudent().setPid((Integer)obj[0]);
+			enrollment.getStudent().setFirstname((String)obj[1]);
+			enrollment.getStudent().setLastname((String)obj[2]);
+			enrollment.getStudent().setMiddlename((String)obj[3]);
+			enrollment.getStudent().setSsn((Integer)obj[4]);
+			enrollment.getStudent().setResidentStatus(new ResidentStatus());
+			enrollment.getStudent().getResidentStatus().setType((String)obj[5]);
+			
+			enrollment.setUnitTaken((Integer)obj[6]);
+			enrollment.setLetter_option((Boolean)obj[7]);
+			enrollment.setSu_option((Boolean)obj[8]);
+			
+			enrollmentList.add(enrollment);
+		}
+		return enrollmentList;
 	}
 }

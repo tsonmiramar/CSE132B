@@ -27,6 +27,12 @@ public class Enrollment {
 	@JoinColumn(name="section_id")
 	private Section section;
 	
+	@Column(name="letter_option")
+	private boolean letter_option;
+	
+	@Column(name="su_option")
+	private boolean su_option;
+	
 	@Column(name="grade")
 	public String grade;
 	
@@ -59,6 +65,22 @@ public class Enrollment {
 
 	public void setSection(Section section) {
 		this.section = section;
+	}
+
+	public boolean isLetter_option() {
+		return letter_option;
+	}
+
+	public void setLetter_option(boolean letter_option) {
+		this.letter_option = letter_option;
+	}
+
+	public boolean isSu_option() {
+		return su_option;
+	}
+
+	public void setSu_option(boolean su_option) {
+		this.su_option = su_option;
 	}
 
 	public String getGrade() {

@@ -2,6 +2,7 @@ package IRepository;
 
 import java.util.List;
 
+import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
@@ -21,4 +22,6 @@ public interface IStudentRepository {
 	List<GradStudent> getAllGradStudent();
 
 	List<Student> getStudentEnrollByQuarter(String quarter, int year);
+
+	List<Enrollment> getAllStudentFromClass(int class_id);
 }

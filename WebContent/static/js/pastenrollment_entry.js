@@ -105,6 +105,12 @@ var appendSectionSelectionItem = function(selector,sectionList){
 }
 
 var displayUnitInput = function(classObj){
+	if (classObj === undefined){
+		$("#unitDiv").hide();
+		$("gradeDiv").hide();
+		return;
+	}
+	
 	var unitFrom = classObj.course.courseUnitNumber.unitFrom;
 	var unitTo = classObj.course.courseUnitNumber.unitTo;
 	if ( unitFrom != unitTo ){
@@ -118,7 +124,7 @@ var displayUnitInput = function(classObj){
 
 var displayGradeInputType = function(class_id){
 	$("#gradeDiv #gradeInputType").empty();
-	if ( courseClassJSON[class_id].course.courseOption.letter_option == true ){
+	if ( courseClassJSON[class_id] !== undefined && courseClassJSON[class_id].course.courseOption.letter_option == true ){
 		$("#gradeDiv #gradeInputType").append("<input type=\"text\" class=\"form-control\" id=\"grade\" placeholder=\"Enter grade\">");
 	}else{
 		$("#gradeDiv #gradeInputType").append(
