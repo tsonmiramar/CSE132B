@@ -156,4 +156,17 @@ public class CourseClassController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/list/grade/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<Enrollment>> getAllClassWithQuarterGradeByStudent(@PathVariable int student_id){
+		try {
+			List<Enrollment> enrollmentList = this.studentService.getAllClassWithQuarterGradeByStudent(student_id);
+			return new ResponseEntity<>(enrollmentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

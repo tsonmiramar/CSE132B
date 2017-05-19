@@ -1,5 +1,6 @@
 package Controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
+import Model.QuarterGPA_DAO;
 import Model.QuarterName;
 import Model.ResidentStatus;
 import Model.Student;
@@ -114,6 +116,45 @@ public class StudentController {
 		try {
 			List<Enrollment> enrollmentList = studentService.getAllStudentFromClass(class_id);
 			return new ResponseEntity<>(enrollmentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/class/grade/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<Enrollment>> get(@PathVariable int student_id){
+		try {
+			List<Enrollment> enrollmentList = studentService.getAllClassWithQuarterGradeByStudent(student_id);
+			return new ResponseEntity<>(enrollmentList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/quarter/gpa/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<QuarterGPA_DAO>> getQuarterGPAbyStudent(@PathVariable int student_id){
+		try {
+			List<QuarterGPA_DAO> quarterGPAList = studentService.getQuarterGPAbyStudent(student_id);
+			return new ResponseEntity<>(quarterGPAList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/cumulativegpa/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<BigDecimal>> getCumulativeGPAbyStudent(@PathVariable int student_id){
+		try {
+			List<BigDecimal> cumulativeGPAList = studentService.getCumulativeGPAListbyStudent(student_id);
+			return new ResponseEntity<>(cumulativeGPAList,HttpStatus.OK);
 		}
 		catch (Exception e){
 			e.printStackTrace();

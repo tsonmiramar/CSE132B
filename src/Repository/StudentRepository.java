@@ -1,5 +1,6 @@
 package Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,20 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import IRepository.IStudentRepository;
+import Model.Course;
+import Model.CourseClass;
+import Model.CourseSubject;
+import Model.CourseUnitNumber;
 import Model.DEPARTMENT;
 import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
+import Model.Quarter;
+import Model.QuarterGPA_DAO;
+import Model.QuarterName;
 import Model.ResidentStatus;
+import Model.Section;
 import Model.Student;
 import Model.StudentType;
 
@@ -46,7 +55,7 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 		List<Student> studentList = new ArrayList<Student>();
 		
 		@SuppressWarnings("unchecked")
-		List<Object[]> rset = session.createNativeQuery("select s.id,s.firstname,s.lastname,s.middlename from STUDENT s")
+		List<Object[]> rset = session.createNativeQuery("select s.id,s.firstname,s.lastname,s.middlename, s.ssn from STUDENT s")
 										   .getResultList();
 		for ( Object[] obj : rset){
 			Student student = new Student();
@@ -54,6 +63,7 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 			student.setFirstname((String)obj[1]);
 			student.setLastname((String)obj[2]);
 			student.setMiddlename((String)obj[3]);
+			student.setSsn((Integer)obj[4]);
 			
 			studentList.add(student);
 		}
@@ -186,5 +196,114 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 			enrollmentList.add(enrollment);
 		}
 		return enrollmentList;
+	}
+	
+	@Override
+	public List<Enrollment> getAllClassWithQuarterGradeByStudent(int student_id) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery(
+				 "select cu.symbol, cs.currNum, e.grade, e.unit, qn.name, q.year from ENROLLMENT e "
+				+"join SECTION s on s.id = e.section_id "	
+				+"join CLASS c on c.id = s.class_id "
+				+"join COURSE cs on cs.id = c.course_id "
+				+"join COURSE_SUBJECT cu on cu.subject_id = cs.subject_id "
+				+"join QUARTER q on q.id = c.quarter_id "
+				+"join QUARTER_NAME qn on qn.id = q.name_id "
+				+"where e.grade is not null and e.letter_option = 1 "
+				+"and e.student_id = :student_id "
+				+"order by q.year asc"
+		).setParameter("student_id", student_id)
+		.getResultList();
+		
+		List<Enrollment> enrollmentList = new ArrayList<Enrollment>();
+		
+		for ( Object[] obj : rset){
+			Enrollment enrollment = new Enrollment();
+			enrollment.setSection(new Section());
+			enrollment.getSection().setSectionClass(new CourseClass());
+			enrollment.getSection().getSectionClass().setCourse(new Course());
+			enrollment.getSection().getSectionClass().getCourse().setCourseSubject(new CourseSubject());
+			enrollment.getSection().getSectionClass().getCourse().getCourseSubject().setSymbol((String)obj[0]);
+			enrollment.getSection().getSectionClass().getCourse().setCourseUnitNumber(new CourseUnitNumber());
+			enrollment.getSection().getSectionClass().getCourse().getCourseUnitNumber().setCurrNum((String)obj[1]);
+			enrollment.setGrade((String)obj[2]);
+			enrollment.setUnitTaken((Integer)obj[3]);
+			enrollment.getSection().getSectionClass().setQuarter(new Quarter());
+			enrollment.getSection().getSectionClass().getQuarter().setQuarterName(new QuarterName());
+			enrollment.getSection().getSectionClass().getQuarter().getQuarterName().setName((String)obj[4]);
+			enrollment.getSection().getSectionClass().getQuarter().setYear((Integer)obj[5]);
+			
+			enrollmentList.add(enrollment);
+		};
+		return enrollmentList;
+	}
+
+	@Override
+	public List<QuarterGPA_DAO> getQuarterGPAbyStudent(int student_id){
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery(
+				 "select sum(gc.number_grade*e.unit)/sum(e.unit) as GPA, qn.name, q.year from ENROLLMENT e "
+				+"join GRADE_CONVERSION gc on e.grade = gc.letter_grade "
+				+"join SECTION s on s.id = e.section_id "	
+				+"join CLASS c on c.id = s.class_id "
+				+"join COURSE cs on cs.id = c.course_id "
+				+"join COURSE_SUBJECT cu on cu.subject_id = cs.subject_id "
+				+"join QUARTER q on q.id = c.quarter_id "
+				+"join QUARTER_NAME qn on qn.id = q.name_id "
+				+"where e.grade is not null and e.grade != 'IN' "
+				+"and e.letter_option = 1 "
+				+"and e.student_id = :student_id "
+				+"group by e.student_id, qn.name, q.year "
+				+"order by qn.name,q.year asc" 
+		).setParameter("student_id", student_id)
+		.getResultList();
+		
+		List<QuarterGPA_DAO> quarterGPAList = new ArrayList<QuarterGPA_DAO>();
+		
+		for ( Object[] obj : rset ){
+			QuarterGPA_DAO quarterGPA = new QuarterGPA_DAO();
+			quarterGPA.setGpa((BigDecimal)obj[0]);
+			quarterGPA.setQuarter(new Quarter());
+			quarterGPA.getQuarter().setQuarterName(new QuarterName());
+			quarterGPA.getQuarter().getQuarterName().setName((String)obj[1]);
+			quarterGPA.getQuarter().setYear((Integer)obj[2]);
+			
+			quarterGPAList.add(quarterGPA);
+		}
+		return quarterGPAList;
+	}
+	
+	@Override
+	public List<BigDecimal> getCumulativeGPAByStudent(int student_id){
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object> rset = session.createNativeQuery(
+				 "select sum(gc.number_grade*e.unit)/sum(e.unit) as Cumulative_GPA from ENROLLMENT e "
+				+"join GRADE_CONVERSION gc on e.grade = gc.letter_grade "
+				+"join SECTION s on s.id = e.section_id "	
+				+"join CLASS c on c.id = s.class_id "
+				+"join COURSE cs on cs.id = c.course_id "
+				+"join COURSE_SUBJECT cu on cu.subject_id = cs.subject_id "
+				+"join QUARTER q on q.id = c.quarter_id "
+				+"join QUARTER_NAME qn on qn.id = q.name_id "
+				+"where e.grade is not null and e.grade != 'IN' and e.letter_option = 1 "
+				+"and e.student_id = :student_id "
+				+"group by e.student_id"
+		)
+		.setParameter("student_id", student_id)
+		.getResultList();
+		
+		List<BigDecimal> cumulativeGPAList = new ArrayList<BigDecimal>();
+		
+		for ( Object obj : rset) {
+			BigDecimal cumulativeGPA = (BigDecimal) obj;
+			cumulativeGPAList.add(cumulativeGPA);
+		}
+		return cumulativeGPAList;	 
 	}
 }

@@ -15,8 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name="SECTION")
 public class Section {
@@ -30,7 +28,6 @@ public class Section {
 	@JoinColumn(name="faculty_id")
 	private Faculty faculty;
 	
-	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="class_id")
 	private CourseClass sectionClass;

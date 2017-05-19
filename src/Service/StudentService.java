@@ -1,5 +1,6 @@
 package Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
 import Model.Probation;
+import Model.QuarterGPA_DAO;
 import Model.ResidentStatus;
 import Model.Student;
 import Model.StudentType;
@@ -90,4 +92,22 @@ public class StudentService implements IStudentService{
 		return studentRepository.getAllStudentFromClass(class_id);
 	}
 	
+	@Override
+	@Transactional
+	public List<Enrollment> getAllClassWithQuarterGradeByStudent(int student_id){
+		return studentRepository.getAllClassWithQuarterGradeByStudent(student_id);
+		
+	}
+	
+	@Override
+	@Transactional
+	public List<QuarterGPA_DAO> getQuarterGPAbyStudent(int student_id){
+		return studentRepository.getQuarterGPAbyStudent(student_id);
+	}
+	
+	@Override
+	@Transactional
+	public List<BigDecimal> getCumulativeGPAListbyStudent(int student_id){
+		return studentRepository.getCumulativeGPAByStudent(student_id);
+	}
 }

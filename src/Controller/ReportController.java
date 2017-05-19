@@ -1,5 +1,6 @@
 package Controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import Model.CourseClass;
 import Model.Enrollment;
+import Model.QuarterGPA_DAO;
 import Model.Student;
 import Service.CourseService;
 import Service.StudentService;
@@ -40,5 +42,18 @@ public class ReportController {
 		model.addAttribute("courseClassList",courseClassList);
 		model.addAttribute("enrollmentList",enrollmentList);
 		return "classroster_report";
+	}
+	
+	@GetMapping("/studentgrade")
+	public String getStudentGradeReport(Model model){
+		List<Student> studentList = studentService.getAllStudent();
+		List<Enrollment> enrollmentList = studentService.getAllClassWithQuarterGradeByStudent( studentList.isEmpty() ? 0 : studentList.get(0).getId());	
+		List<QuarterGPA_DAO> quarterGPAList = studentService.getQuarterGPAbyStudent(studentList.isEmpty() ? 0 : studentList.get(0).getId());
+		List<BigDecimal> cumulativeGPAList = studentService.getCumulativeGPAListbyStudent(studentList.isEmpty() ? 0 : studentList.get(0).getId());
+		model.addAttribute("studentList", studentList);
+		model.addAttribute("enrollmentList", enrollmentList);
+		model.addAttribute("quarterGPAList",quarterGPAList);
+		model.addAttribute("cumulativeGPAList",cumulativeGPAList);
+		return "studentgrade_report";
 	}
 }
