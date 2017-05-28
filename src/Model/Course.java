@@ -14,8 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Check;
 
 @Entity
@@ -44,7 +47,11 @@ public class Course {
 				inverseJoinColumns = { @JoinColumn(name = "prereq_id", nullable = false)}
 			  )
 	private Collection<Course> prereq = new HashSet<Course>(); //List of all prerequisite of this course
-		
+	
+	@OneToMany(mappedBy="courseWithType")
+	@Cascade(value=CascadeType.SAVE_UPDATE)
+	private Collection<CourseTypeCategory> courseTypeCategoryList = new HashSet<CourseTypeCategory>();
+	
 	public Course() {}
 
 	public int getId() {
@@ -81,5 +88,13 @@ public class Course {
 	}
 	public void setPrereq(Collection<Course> prereq) {
 		this.prereq = prereq;
+	}
+
+	public Collection<CourseTypeCategory> getCourseTypeCategoryList() {
+		return courseTypeCategoryList;
+	}
+
+	public void setCourseTypeCategoryList(Collection<CourseTypeCategory> courseTypeCategoryList) {
+		this.courseTypeCategoryList = courseTypeCategoryList;
 	}
 }

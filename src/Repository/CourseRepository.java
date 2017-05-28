@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import IRepository.ICourseRepository;
 import Model.Course;
 import Model.CourseSubject;
+import Model.CourseType;
 import Model.CourseUnitNumber;
 
 @Repository
@@ -80,6 +81,14 @@ public class CourseRepository extends BaseRepository implements ICourseRepositor
 			courseList.add(course);
 		}
 		return courseList;
+	}
+
+	@Override
+	public List<CourseType> getAllCourseType() {
+		Session session = sessionFactory.getCurrentSession();
+		
+		List<CourseType> courseTypeList = session.createQuery("from CourseType",CourseType.class).getResultList();
+		return courseTypeList;
 	}
 	
 	

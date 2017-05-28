@@ -31,8 +31,6 @@ delete from UNDERGRAD;
 delete from STUDENT;
 
 delete from FACULTY;
-
-delete from QUARTER;
 delete from ENROLLMENT;
 
 delete from PREREQUISITE;

@@ -31,6 +31,9 @@ public class Degree {
 	
 	@Column(name="institution")
 	private String institution;
+	
+	@Column(name="name")
+	private String name;
 
 	@OneToMany(mappedBy="degreeMaster")
 	@Cascade(CascadeType.SAVE_UPDATE)
@@ -62,6 +65,14 @@ public class Degree {
 
 	public void setInstitution(String institution) {
 		this.institution = institution;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Collection<MSConcentration> getConcentrationCourseList() {

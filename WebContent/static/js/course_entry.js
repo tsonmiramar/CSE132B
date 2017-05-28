@@ -75,6 +75,23 @@ $('document').ready(function(){
 				'unitTo': $("#maxUnitInput").val()
 		};
 		
+		var currNum = parseInt($("#currNum").val().replace(/[^0-9]/g, ""));
+		
+		course['courseTypeCategoryList'] = [{
+				'courseType' : {
+					'id': 0 <= currNum && currNum <= 99 ? 1 : // 1: Lower Division, 2: Upper Division
+						  100 <= currNum && currNum <= 199 ? 2 : 3  //3: Graduate
+				}
+		}];
+		
+		if ($("#techElective").is(":checked")){
+			course['courseTypeCategoryList'].push({
+				'courseType': {
+					'id' : 4 //4: Tech Elective
+				}
+			});
+		}
+		
 		course['prereq'] = [];
 		if ( !$('#PrereqList').is(':empty')){
 			$("#PrereqList").children("input[type='hidden']").each(function(){

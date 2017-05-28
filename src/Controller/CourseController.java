@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import Model.Course;
 import Model.CourseExtraOption;
 import Model.CourseSubject;
+import Model.CourseTypeCategory;
 import Model.CourseUnitNumber;
 import Service.CourseService;
 
@@ -58,12 +59,15 @@ public class CourseController {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-}
+	}
 	
 	@PostMapping("/add")
 	@ResponseBody
 	public ResponseEntity<Void> addCourse(@RequestBody Course course){
 			try {
+				for ( CourseTypeCategory courseTypeCategory : course.getCourseTypeCategoryList()){
+					courseTypeCategory.setCourseWithType(course);
+				}
 				this.courseService.insertCourse(course);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}

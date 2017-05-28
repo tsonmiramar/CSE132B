@@ -23,6 +23,7 @@ import Model.QuarterName;
 import Model.ResidentStatus;
 import Model.Section;
 import Model.Student;
+import Model.StudentDegree;
 import Model.StudentType;
 
 @Repository
@@ -33,18 +34,33 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 		Session session = sessionFactory.getCurrentSession();
 		
 		if ( studentType.getUnderGrad() != null){
+			if (!studentType.getUnderGrad().getDegreeList().isEmpty()){
+				((List<StudentDegree>)studentType.getUnderGrad().getDegreeList()).get(0).setStudent(studentType.getUnderGrad());
+			}
 			session.save(studentType.getUnderGrad());
 		}
 		else if ( studentType.getMaster() != null){
+			if (!studentType.getMaster().getDegreeList().isEmpty()){
+				((List<StudentDegree>)studentType.getMaster().getDegreeList()).get(0).setStudent(studentType.getMaster());
+			}
 			session.save(studentType.getMaster());
 		}
 		else if ( studentType.getBsmsMaster() != null){
+			if (!studentType.getBsmsMaster().getDegreeList().isEmpty()){
+				((List<StudentDegree>)studentType.getBsmsMaster().getDegreeList()).get(0).setStudent(studentType.getUnderGrad());
+			}
 			session.save(studentType.getBsmsMaster());
 		}
 		else if ( studentType.getPhdCandidate() != null){
+			if (!studentType.getPhdCandidate().getDegreeList().isEmpty()){
+				((List<StudentDegree>)studentType.getPhdCandidate().getDegreeList()).get(0).setStudent(studentType.getUnderGrad());
+			}
 			session.save(studentType.getPhdCandidate());
 		}
 		else if ( studentType.getPhdPreCandidate() != null){
+			if (!studentType.getPhdPreCandidate().getDegreeList().isEmpty()){
+				((List<StudentDegree>)studentType.getPhdPreCandidate().getDegreeList()).get(0).setStudent(studentType.getUnderGrad());
+			}
 			session.save(studentType.getPhdPreCandidate());
 		}
 	}

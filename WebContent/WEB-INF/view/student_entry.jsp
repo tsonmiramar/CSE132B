@@ -45,6 +45,24 @@
 					</c:forTokens>
 				</div>
 				
+				<div class="form-group row">
+					<div class="col-md-12">
+						<label class="checkbox-inline">
+							<input type="checkbox" id="degreeCheckbox" checked/> Has Degree ?
+						</label>
+					</div>
+				</div>
+				
+				<div class="form-group row" id="degreeDiv">
+					<div class="col-md-12">
+						<label>Degree</label>
+						<select class="form-control" id="degree">
+							<c:forEach var="degree" items="${degreeList}">
+								<option value="${degree.id}">${degree.name}</option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
 				<label>Attendance</label>
 				<div class="form-group row">
 					<c:forTokens var="dest" items="From,To" delims=",">

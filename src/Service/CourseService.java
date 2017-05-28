@@ -10,6 +10,7 @@ import IService.ICourseService;
 import Model.Course;
 import Model.CourseClass;
 import Model.CourseSubject;
+import Model.CourseType;
 import Model.Enrollment;
 import Model.ReviewSession;
 import Repository.CourseClassRepository;
@@ -93,5 +94,11 @@ public class CourseService implements ICourseService{
 	@Transactional
 	public List<CourseClass> getAllCourseClass() {
 		return this.courseClassRepository.getAllCourseClass();
+	}
+	
+	@Override
+	@Transactional
+	public List<CourseType> getAllCourseType(){
+		return this.courseRepository.getAllCourseType();
 	}
 }

@@ -59,6 +59,10 @@
 					<label class="checkbox-inline">
 						<input type="checkbox" id="labwork" value="false"/> Lab Work Required ?
 					</label>
+					
+					<label class="checkbox-inline">
+						<input type="checkbox" id="techElective" value="false"/> Technical Elective ?
+					</label>
 				</div>
 				
 				<div class="form-group">

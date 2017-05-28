@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import Model.Course;
+import Model.CourseType;
 import Model.DEPARTMENT;
 import Model.DegreeType;
 import Model.UnitRequirement;
@@ -39,9 +40,11 @@ public class DegreeController {
 		List<DEPARTMENT> departmentList = departmentService.getAllDepartment();
 		List<DegreeType> degreeTypeList = degreeService.getAllDegreeType();
 		List<Course> courseList = courseService.getAllCourseByDepartment(departmentList.get(0).getId());
+		List<CourseType> courseTypeList = courseService.getAllCourseType();
 		model.addAttribute("departmentList", departmentList);
 		model.addAttribute("degreeTypeList", degreeTypeList);
 		model.addAttribute("courseList", courseList);
+		model.addAttribute("courseTypeList", courseTypeList);
 		return "degree_entry";
 	}
 	

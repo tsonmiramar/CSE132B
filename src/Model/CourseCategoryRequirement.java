@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +18,9 @@ public class CourseCategoryRequirement {
 	@Column(name="id")
 	private int	id;
 	
-	@Column(name="type")
-	private String type;
+	@ManyToOne
+	@JoinColumn(name="type_id")
+	private CourseType type;
 	
 	@Column(name="min_gpa")
 	private Double minGPA;
@@ -37,11 +40,11 @@ public class CourseCategoryRequirement {
 		this.id = id;
 	}
 
-	public String getType() {
+	public CourseType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(CourseType type) {
 		this.type = type;
 	}
 

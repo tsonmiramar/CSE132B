@@ -16,7 +16,7 @@
 		<div class="col-md-offset-3 col-md-6">
 			<form method="POST" action="${pageContext.request.contextPath}/degree/add" id="degree_entryForm">
 				<div class="form-group row">
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label>Department</label>
 						<select class="form-control" id="department">
 							<c:forEach var="dept" items="${departmentList}">
@@ -24,12 +24,18 @@
 							</c:forEach>
 						</select>
 					</div>
-					<div class="col-md-4">
+					
+					<div class="col-md-3">
+						<label>Name</label>
+						<input type="text" class="form-control" id="name" placeholder="Enter degree's name"/>
+					</div>
+					
+					<div class="col-md-3">
 						<label>Institution</label>
 						<input type="text" class="form-control" id="institution" placeholder="Enter an institution"/>
 					</div>
 					
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label>Degree Type</label>
 						<select class="form-control" id="degreeType">
 							<c:forEach var="type" items="${degreeTypeList}">
@@ -69,6 +75,13 @@
 								<div class="col-md-4">
 									<label style="text-transform:capitalize">${identity}</label>
 									<c:choose>
+										<c:when test="${identity == 'type' }">
+											<select class="form-control" id="${identity}">
+												<c:forEach var="courseType" items="${courseTypeList}">
+													<option value="${courseType.id}">${courseType.name}</option>
+												</c:forEach>
+											</select>
+										</c:when>
 										<c:when test="${identity == 'GPA'}">
 											<input type="number" step=0.1 min=0.0 class="form-control" id="${identity}" />
 										</c:when>

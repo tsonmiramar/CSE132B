@@ -103,6 +103,7 @@ $('document').ready(function(){
 		}
 	});
 	
+	/*** EVENT HANDLER ***/
 	//Handle Student Type event
 	$('#studentType').on('click',"input[type='radio']",function(){
 		
@@ -126,6 +127,16 @@ $('document').ready(function(){
 		});
 	});
 	
+	// Handle Has Degree checkbox event
+	$("#degreeCheckbox").on('change',function(){
+		if ($(this).is(":checked")){
+			$("#degreeDiv").show();
+		}
+		else{
+			$("#degreeDiv").hide();
+		}
+	});
+	
 	//Handle Student Form submission
 	$("#student_entryForm").submit(function(e){
 		e.preventDefault();
@@ -140,8 +151,19 @@ $('document').ready(function(){
 				"residentStatus":{
 					"id": $("#residency option:selected").val()
 				},
+				"degreeList": [],
 				"quarterAttendList": []
 		};
+		
+		if ($("#degreeCheckbox").is(":checked")){
+			student['degreeList'].push(
+				{
+					'degree': {
+						'id':$("#degree option:selected").val()
+					}
+				}
+				);
+		}
 		
 		//Compute attendance quarter
 		var quarterFrom = parseInt($("#quarterFrom").val());

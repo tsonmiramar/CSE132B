@@ -26,4 +26,6 @@ public interface ICourseService {
 	List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id);
 
 	List<CourseClass> getAllCourseClass();
+
+	List<CourseType> getAllCourseType();
 }

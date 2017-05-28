@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import IService.IDegreeService;
+import Model.Degree;
 import Model.DegreeType;
 import Model.UnitRequirement;
 import Repository.DegreeRepository;
@@ -28,6 +29,12 @@ public class DegreeService implements IDegreeService {
 	@Transactional
 	public List<DegreeType> getAllDegreeType() {
 		return degreeRepository.getAllDegreeType();
+	}
+	
+	@Override
+	@Transactional
+	public List<Degree> getAllDegree(){
+		return degreeRepository.getAllDegree();
 	}
 
 }

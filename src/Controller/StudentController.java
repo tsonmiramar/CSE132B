@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import Model.Degree;
 import Model.Enrollment;
 import Model.GradStudent;
 import Model.PhDCandidate;
@@ -24,6 +25,7 @@ import Model.QuarterName;
 import Model.ResidentStatus;
 import Model.Student;
 import Model.StudentType;
+import Service.DegreeService;
 import Service.QuarterService;
 import Service.StudentService;
 
@@ -37,12 +39,17 @@ public class StudentController {
 	@Autowired
 	private QuarterService quarterService;	
 	
+	@Autowired
+	private DegreeService degreeService;
+	
 	@GetMapping("/entry")
 	public String getStudentEntryPage(Model model){
 		List<QuarterName> quarterNameList = quarterService.getAllQuarterName();
 		List<ResidentStatus> residentStatusList = studentService.getAllResidentStatus();
+		List<Degree> degreeList = degreeService.getAllDegree();
 		model.addAttribute("quarterNameList", quarterNameList);
 		model.addAttribute("residentStatusList", residentStatusList);
+		model.addAttribute("degreeList",degreeList);
 		return "student_entry";
 	}
 	

@@ -82,6 +82,7 @@ $('document').ready(function(){
 					'degreeType':{
 						'id' : $("#degreeType option:selected").val()
 					},
+					'name': $("#name").val(),
 					'institution': $("#institution").val(),
 					'concentrationCourseList': []
 				},
@@ -105,7 +106,9 @@ $('document').ready(function(){
 		$("#unitCategoryRequirement #categoryRequirement").each(function(){
 			degreeRequire.totalUnit.unitCourseCategoryRequirement.push({
 				"courseCategoryRequirement" :{
-					"type" : $(this).find("#type").val(),
+					"type" : {
+						'id': $(this).find("#type option:selected").val()
+					},
 					"minGPA" : $(this).find("#GPA").val(),
 					"minUnit" : $(this).find("#minimumUnit").val()
 				}
