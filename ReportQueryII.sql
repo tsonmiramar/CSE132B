@@ -33,9 +33,23 @@ left join COURSE_SUBJECT cs_enrolled on cu_enrolled.subject_id = cs_enrolled.sub
 
 /* b */
 with student_from_section as 
-(select student_id from ENROLLMENT where grade is null and section_id = 10)
-
-select * from ENROLLMENT e
+(select student_id from ENROLLMENT where grade is null and section_id = 9),
+current_enroll_meeting as
+(select count(sfs.student_id) as num_student_enroll, m.id as meeting_id, m.start_time, m.end_time,  cast(wm.weekday as varchar) as weekday from ENROLLMENT e
 join MEETING m on m.section_id = e.section_id
-join WEEKLY_MEETING wm on wm.id = m.id
+join WEEKLY_MEETING wm on m.id = wm.id
 join student_from_section sfs on e.student_id = sfs.student_id
+group by m.id, m.start_time, m.end_time, cast(wm.weekday as varchar)),
+day_available_time as
+(select m.id, wm.weekday, rsat.start_time, rsat.end_time from current_enroll_meeting cem
+join MEETING m on cem.meeting_id = m.id
+join WEEKLY_MEETING wm on m.id = wm.id
+join REVIEW_SESSION_AVAILABLE_TIME rsat on m.start_time >= rsat.end_time or m.end_time <= rsat.start_time),
+final_available_time_with_null as
+(select wd.day, 
+	case when isnull(cem.num_student_enroll,0) = 0 then rsat.start_time else dat.start_time end as start_time, 
+	case when isnull(cem.num_student_enroll,0) = 0 then rsat.end_time else dat.end_time end as end_time
+from WEEKDAY wd cross join REVIEW_SESSION_AVAILABLE_TIME rsat
+left outer join current_enroll_meeting cem on rsat.start_time = cem.start_time and rsat.end_time = cem.end_time and wd.day = cem.weekday
+left outer join day_available_time dat on dat.start_time = rsat.start_time and dat.end_time = rsat.end_time and wd.day = cast(dat.weekday as varchar))
+select * from final_available_time_with_null where start_time is not null and end_time is not null
