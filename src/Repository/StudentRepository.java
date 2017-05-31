@@ -322,4 +322,35 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 		}
 		return cumulativeGPAList;	 
 	}
+
+	@Override
+	public List<Student> getMasterStudentEnrollByQuarter(String quarter, int year) {
+		Session session = sessionFactory.getCurrentSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery(
+				 "select s.id,s.firstname,s.lastname,s.middlename from STUDENT s " 
+				+"join MASTER m on s.id = m.id "
+				+"and exists ( " 
+				+"select e.student_id from ENROLLMENT e " 
+				+"join SECTION st on e.section_id = st.id "
+				+"join CLASS c on st.class_id = c.id "
+				+"join QUARTER q on c.quarter_id = q.id "
+				+"join QUARTER_NAME qn on q.name_id = qn.id " 
+				+"where qn.name = :quarter and q.year = :year and m.id = e.student_id )")
+				.setParameter("quarter", quarter)
+				.setParameter("year", year)
+				.getResultList();
+		
+		List<Student> studentList = new ArrayList<Student>();
+		for ( Object[] obj : rset ){
+			Student student = new Student();
+			student.setId((Integer)obj[0]);
+			student.setFirstname((String)obj[1]);
+			student.setLastname((String)obj[2]);
+			student.setMiddlename((String)obj[2]);
+			studentList.add(student);
+		}
+		return studentList;
+	}
 }

@@ -110,4 +110,10 @@ public class StudentService implements IStudentService{
 	public List<BigDecimal> getCumulativeGPAListbyStudent(int student_id){
 		return studentRepository.getCumulativeGPAByStudent(student_id);
 	}
+
+	@Override
+	@Transactional
+	public List<Student> getMasterStudentEnrollByQuarter(String quarter, int year) {
+		return studentRepository.getMasterStudentEnrollByQuarter(quarter, year);
+	}
 }

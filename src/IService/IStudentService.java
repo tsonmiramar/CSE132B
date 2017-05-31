@@ -37,4 +37,6 @@ public interface IStudentService {
 	List<QuarterGPA_DAO> getQuarterGPAbyStudent(int student_id);
 
 	List<BigDecimal> getCumulativeGPAListbyStudent(int student_id);
+
+	List<Student> getMasterStudentEnrollByQuarter(String quarter, int year);
 }

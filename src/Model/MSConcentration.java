@@ -18,14 +18,13 @@ public class MSConcentration {
 	@Column(name="id")
 	private int	id;
 	
+	@Column(name="name")
+	private String name;
+	
 	@ManyToOne
 	@JoinColumn(name="degree_id")
 	private Degree degreeMaster;
 	
-	@ManyToOne
-	@JoinColumn(name="course_id")
-	private Course courseConcentration;
-
 	public MSConcentration() {
 		super();
 	}
@@ -46,11 +45,11 @@ public class MSConcentration {
 		this.degreeMaster = degreeMaster;
 	}
 
-	public Course getCourseConcentration() {
-		return courseConcentration;
+	public String getName() {
+		return name;
 	}
 
-	public void setCourseConcentration(Course courseConcentration) {
-		this.courseConcentration = courseConcentration;
+	public void setName(String name) {
+		this.name = name;
 	}
 }
