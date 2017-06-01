@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import Model.ConcentrationCourseClassDA;
+import Model.Course;
 import Model.CourseClass;
 import Model.CourseClassConflict;
 import Model.Degree;
 import Model.DegreeRemainingDA;
 import Model.Enrollment;
+import Model.Faculty;
+import Model.GradeCount;
+import Model.GradeGPA;
 import Model.MSConcentration;
+import Model.Quarter;
 import Model.QuarterGPA_DAO;
 import Model.Section;
 import Model.Student;
@@ -23,7 +28,10 @@ import Model.Weekday;
 import Model.WeeklyMeeting;
 import Service.CourseService;
 import Service.DegreeService;
+import Service.FacultyService;
+import Service.GradeReportService;
 import Service.MeetingService;
+import Service.QuarterService;
 import Service.StudentService;
 
 @Controller
@@ -41,6 +49,15 @@ public class ReportController {
 	
 	@Autowired
 	private MeetingService meetingService;
+	
+	@Autowired
+	private FacultyService facultyService;
+	
+	@Autowired
+	private QuarterService quarterService;
+	
+	@Autowired
+	private GradeReportService gradeReportService;
 	
 	@GetMapping("/classbystudent")
 	public String getClassbyStudentPage(Model model){
@@ -129,5 +146,27 @@ public class ReportController {
 		model.addAttribute("weekdayList", weekdayList);
 		model.addAttribute("reviewSessionList",reviewSessionList);
 		return "review_session_report";
+	}
+	
+	@GetMapping("/decisionsupport")
+	public String getDecisionSupportReport(Model model){
+		List<Course> courseList = courseService.getAllCourse();
+		List<Faculty> facultyList = facultyService.getAllFaculty();
+		List<Quarter> quarterList = quarterService.getAllQuarter();
+		int faculty_id = facultyList.isEmpty() ? 0 : facultyList.get(0).getId();
+		int course_id = courseList.isEmpty() ? 0 : courseList.get(0).getId();
+		int quarter_id = 48; //Fall 2014
+		List<GradeCount> gradeCountFacultyCourseQuarter = gradeReportService.getGradeCountbyFacultyCourseQuarter(faculty_id, course_id, quarter_id);
+		List<GradeCount> gradeCountFacultyCourse = gradeReportService.getGradeCountbyFacultyCourse(faculty_id, course_id);
+ 		List<GradeCount> gradeCountbyCourse = gradeReportService.getGradeCountbyCourse(course_id);
+		List<GradeGPA> gradeGPAFacultyCourse = gradeReportService.getGradeGPAFacultyCourse(faculty_id, course_id);
+ 		model.addAttribute("courseList", courseList);
+		model.addAttribute("facultyList",facultyList);
+		model.addAttribute("quarterList",quarterList);
+		model.addAttribute("gradeCountFacultyCourseQuarterList",gradeCountFacultyCourseQuarter);
+		model.addAttribute("gradeCountFacultyCourseList",gradeCountFacultyCourse);
+		model.addAttribute("gradeCountByCourseList",gradeCountbyCourse);
+		model.addAttribute("gradeGPAFacultyCourseList",gradeGPAFacultyCourse);
+		return "decision_support_report";
 	}
 }
