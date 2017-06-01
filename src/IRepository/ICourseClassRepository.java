@@ -3,8 +3,11 @@ package IRepository;
 import java.util.List;
 
 import Model.CourseClass;
+import Model.CourseClassConflict;
 import Model.Enrollment;
 import Model.ReviewSession;
+import Model.Section;
+import Model.WeeklyMeeting;
 
 public interface ICourseClassRepository {
 	public void insertCourseClass(CourseClass courseClass);
@@ -20,4 +23,10 @@ public interface ICourseClassRepository {
 	List<CourseClass> getCurrentCourseClassEnrolledByStudentId(int student_id);
 
 	List<CourseClass> getAllCourseClass();
+
+	List<CourseClassConflict> getClassCannotTakebyStudent(int student_id, String quarter, int year);
+
+	List<Section> getAllCurrentQuarterSection();
+
+	List<WeeklyMeeting> getAllAvailableReviewSessionCurrentQuarter(int section_id, int dayFrom_id, int dayTo_id);
 }

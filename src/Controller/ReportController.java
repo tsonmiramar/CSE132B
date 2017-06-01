@@ -11,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import Model.ConcentrationCourseClassDA;
 import Model.CourseClass;
+import Model.CourseClassConflict;
 import Model.Degree;
 import Model.DegreeRemainingDA;
 import Model.Enrollment;
 import Model.MSConcentration;
 import Model.QuarterGPA_DAO;
+import Model.Section;
 import Model.Student;
+import Model.Weekday;
+import Model.WeeklyMeeting;
 import Service.CourseService;
 import Service.DegreeService;
+import Service.MeetingService;
 import Service.StudentService;
 
 @Controller
@@ -33,6 +38,9 @@ public class ReportController {
 	
 	@Autowired
 	private DegreeService degreeService;
+	
+	@Autowired
+	private MeetingService meetingService;
 	
 	@GetMapping("/classbystudent")
 	public String getClassbyStudentPage(Model model){
@@ -96,5 +104,30 @@ public class ReportController {
 		model.addAttribute("concentrationCompletedList",concentrationList);
 		model.addAttribute("concentrationCourseClassNotYetTakenList", concentrationCourseClassList);
 		return "master_remaining_report";
+	}
+	
+	@GetMapping("/conflictclass")
+	public String getConflictClassSchedule(Model model){
+		List<Student> studentList = studentService.getStudentEnrollByQuarter("SPRING", 2017);
+		int student_id = studentList.isEmpty() ? 0 : studentList.get(0).getId();
+		List<CourseClassConflict> courseClassConflictList = courseService.getClassCannotTakebyStudent(student_id,"SPRING",2017);
+		model.addAttribute("studentList",studentList);
+		model.addAttribute("courseClassConflictList",courseClassConflictList);
+		return "class_conflict_report";
+	}
+	
+	@GetMapping("/availablereviewsession")
+	public String getAvailableReviewSessionHour(Model model){
+		List<Section> sectionList = courseService.getAllCurrentQuarterSection();
+		List<Weekday> weekdayList = meetingService.getAllWeekday();
+		
+		int section_id = sectionList.isEmpty() ? 0 : sectionList.get(0).getId();
+		int dayFrom_id = 1; //Monday
+		int dayTo_id = 5; //Friday
+		List<WeeklyMeeting> reviewSessionList = courseService.getAllAvailableReviewSessionCurrentQuarter(section_id,dayFrom_id, dayTo_id); 
+		model.addAttribute("sectionList",sectionList);
+		model.addAttribute("weekdayList", weekdayList);
+		model.addAttribute("reviewSessionList",reviewSessionList);
+		return "review_session_report";
 	}
 }

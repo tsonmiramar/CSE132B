@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 import Model.CourseClass;
 import Model.Faculty;
 import Model.ReviewSession;
+import Model.WeeklyMeeting;
 import Service.CourseService;
 import Service.FacultyService;
 
@@ -69,6 +71,19 @@ public class SectionController {
 		try{
 			this.courseService.insertReviewSession(reviewSession);
 			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/meeting/availablereviewsession/{section_id}/{dayFrom_id}/{dayTo_id}")
+	@ResponseBody
+	public ResponseEntity<List<WeeklyMeeting>> getAvailableReviewSession(@PathVariable int section_id,@PathVariable int dayFrom_id, @PathVariable int dayTo_id){
+		try{
+			List<WeeklyMeeting> reviewSessionList = courseService.getAllAvailableReviewSessionCurrentQuarter(section_id, dayFrom_id, dayTo_id);
+			return new ResponseEntity<>(reviewSessionList,HttpStatus.OK);
 		}
 		catch(Exception e){
 			e.printStackTrace();

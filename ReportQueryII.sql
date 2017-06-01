@@ -17,8 +17,8 @@ join student_enroll_meeting sem on wm.weekday like sem.weekday
 	and m.start_time < sem.end_time 
 	and m.end_time > sem.start_time
 where qn.name = 'SPRING' and q.year = 2017 
-and m.id not in
-(select id from student_enroll_meeting) 
+and c.id not in
+(select class_id from student_enroll_meeting) 
 group by c.id, sem.class_id)
 
 select cs_conflict.symbol as conflict_symbol, cu_conflict.currNum as conflict_num, c_conflict.title as conflict_title, 

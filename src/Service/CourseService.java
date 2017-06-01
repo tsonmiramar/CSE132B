@@ -9,10 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import IService.ICourseService;
 import Model.Course;
 import Model.CourseClass;
+import Model.CourseClassConflict;
 import Model.CourseSubject;
 import Model.CourseType;
 import Model.Enrollment;
 import Model.ReviewSession;
+import Model.Section;
+import Model.WeeklyMeeting;
 import Repository.CourseClassRepository;
 import Repository.CourseRepository;
 import Repository.CourseSubjectRepository;
@@ -98,7 +101,25 @@ public class CourseService implements ICourseService{
 	
 	@Override
 	@Transactional
+	public List<Section> getAllCurrentQuarterSection(){
+		return courseClassRepository.getAllCurrentQuarterSection();
+	}
+	
+	@Override
+	@Transactional
+	public List<CourseClassConflict> getClassCannotTakebyStudent(int student_id, String quarter, int year){
+		return courseClassRepository.getClassCannotTakebyStudent(student_id, quarter,year);
+	}
+	
+	@Override
+	@Transactional
 	public List<CourseType> getAllCourseType(){
 		return this.courseRepository.getAllCourseType();
+	}
+	
+	@Override
+	@Transactional
+	public List<WeeklyMeeting> getAllAvailableReviewSessionCurrentQuarter(int section_id, int dayFrom_id, int dayTo_id) {
+		return courseClassRepository.getAllAvailableReviewSessionCurrentQuarter(section_id, dayFrom_id,dayTo_id);
 	}
 }

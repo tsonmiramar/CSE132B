@@ -28,4 +28,10 @@ public interface ICourseService {
 	List<CourseClass> getAllCourseClass();
 
 	List<CourseType> getAllCourseType();
+
+	List<CourseClassConflict> getClassCannotTakebyStudent(int student_id, String quarter, int year);
+
+	List<Section> getAllCurrentQuarterSection();
+
+	List<WeeklyMeeting> getAllAvailableReviewSessionCurrentQuarter(int section_id, int dayFrom_id, int dayTo_id);
 }

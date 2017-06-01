@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import Model.Course;
 import Model.CourseClass;
+import Model.CourseClassConflict;
 import Model.Enrollment;
 import Model.Quarter;
 import Model.Student;
@@ -169,4 +170,18 @@ public class CourseClassController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@GetMapping("/classcannottake/{student_id}")
+	@ResponseBody
+	public ResponseEntity<List<CourseClassConflict>> getAllClassCannotTakebyStudent(@PathVariable int student_id){
+		try {
+			List<CourseClassConflict> courseClassConflictList = this.courseService.getClassCannotTakebyStudent(student_id, "SPRING", 2017);
+			return new ResponseEntity<>(courseClassConflictList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 }
