@@ -190,7 +190,7 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 				+"join CLASS c on sc.class_id = c.id "
 				+"join QUARTER q on c.quarter_id = q.id "
 				+"join QUARTER_NAME qn on q.name_id = qn.id "
-				+"join class_title ct on c.title = ct.title"
+				+"join class_title ct on c.title like ct.title "
 				)
 		.setParameter("class_id", class_id)
 		.getResultList();
