@@ -131,11 +131,7 @@ var displayGradeGPAOverYear = function(faculty_id,course_id){
 				$("#GradeGPAOverYearDiv").append(
 						"<div class=\"row\">"
 							+"<div class=\"col-md-4\">"
-								+"<h4>"+data[idx].grade+"</h4>"
-							+"</div>"
-						
-							+"<div class=\"col-md-4\">"
-								+"<h4>"+data[idx].gpa+"</h4>"
+								+"<h4>"+data[idx]+"</h4>"
 							+"</div>"
 						+"</div>"
 				);		

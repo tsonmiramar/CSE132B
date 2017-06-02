@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import IRepository.IGradeReportRepository;
 import Model.GradeCount;
-import Model.GradeGPA;
 
 @Repository
 public class GradeReportRepository extends BaseRepository implements IGradeReportRepository{
@@ -116,30 +115,27 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 	}
 	
 	@Override
-	public List<GradeGPA> getGradeGPAFacultyCourse(int faculty_id, int course_id){
+	public List<BigDecimal> getGradeGPAFacultyCourse(int faculty_id, int course_id){
 		Session session = sessionFactory.getCurrentSession();
 		
-		List<GradeGPA> gradeGPAList = new ArrayList<GradeGPA>();
+		List<BigDecimal> gradeGPAList = new ArrayList<BigDecimal>();
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "with enrollment_grade as "
-				+"(select e.grade, sum(gc.number_grade*e.unit)/sum(e.unit) as gpa from ENROLLMENT e "
-				+"join GRADE_CONVERSION gc on e.grade = gc.letter_grade "
-				+"join SECTION s on e.section_id = s.id "
-				+"join CLASS c on s.class_id = c.id "
-				+"where e.grade is not null "
-				+"and s.faculty_id = :faculty_id and c.course_id = :course_id " 
-				+"group by e.grade) "
-				+"select gc.letter_grade, isnull(eg.gpa,0) as gpa from GRADE_CONVERSION gc left outer join enrollment_grade eg on gc.letter_grade = eg.grade"
+					 "select isnull(sum(gc.number_grade*e.unit)/sum(e.unit),0) as gpa from ENROLLMENT e "
+					+"join GRADE_CONVERSION gc on e.grade = gc.letter_grade "
+					+"join SECTION s on e.section_id = s.id "
+					+"join CLASS c on s.class_id = c.id "
+					+"where e.grade is not null "
+					+"and s.faculty_id = :faculty_id and c.course_id = :course_id "
 				)
 				 .setParameter("faculty_id", faculty_id)
 		 		 .setParameter("course_id", course_id)
 		 		 .getResultList();
 		
-		for ( Object[] obj : rset) {
-			GradeGPA gradeGPA = new GradeGPA((String)obj[0],(BigDecimal)obj[1]);
-			gradeGPAList.add(gradeGPA);
+		for ( Object obj : rset) {
+			BigDecimal gpa = (BigDecimal)obj;
+			gradeGPAList.add(gpa);
 		}
 		return gradeGPAList;
 	}

@@ -1,9 +1,9 @@
 package IRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import Model.GradeCount;
-import Model.GradeGPA;
 
 public interface IGradeReportRepository {
 	
@@ -13,5 +13,5 @@ public interface IGradeReportRepository {
 
 	List<GradeCount> getGradeCountbyCourse(int course_id);
 
-	List<GradeGPA> getGradeGPAFacultyCourse(int faculty_id, int course_id);
+	List<BigDecimal> getGradeGPAFacultyCourse(int faculty_id, int course_id);
 }

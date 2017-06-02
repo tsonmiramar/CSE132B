@@ -27,7 +27,7 @@
 		
 		<div class="row">
 			<div class="col-md-2"></div>	
-			<c:forEach var="item" items="Pid,First,Last,Middle,SSN,Resident,Unit,GradeOption">
+			<c:forEach var="item" items="Pid,First,Last,SSN,Resident,Unit,Grade,Quarter">
 				<div class="col-md-1">
 					<h3><strong>${item}</strong></h3>
 				</div>
@@ -51,10 +51,6 @@
 					</div>
 					
 					<div class="col-md-1">
-						<h3>${enrollment.student.middlename}</h3>
-					</div>
-					
-					<div class="col-md-1">
 						<h3>${enrollment.student.ssn}</h3>
 					</div>
 					
@@ -74,6 +70,9 @@
 								<h3>SU</h3>
 							</c:otherwise>
 						</c:choose>
+					</div>
+					<div class="col-md-1">
+						<h3>${enrollment.section.sectionClass.quarter.quarterName.name} ${enrollment.section.sectionClass.quarter.year}</h3>
 					</div>
 				</div>
 			</c:forEach>

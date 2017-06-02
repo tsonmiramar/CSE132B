@@ -1,5 +1,6 @@
 package Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import IService.IGradeReportService;
 import Model.GradeCount;
-import Model.GradeGPA;
 import Repository.GradeReportRepository;
 
 @Service
@@ -37,7 +37,7 @@ public class GradeReportService implements IGradeReportService {
 
 	@Override
 	@Transactional
-	public List<GradeGPA> getGradeGPAFacultyCourse(int faculty_id, int course_id) {
+	public List<BigDecimal> getGradeGPAFacultyCourse(int faculty_id, int course_id) {
 		return gradeReportRepository.getGradeGPAFacultyCourse(faculty_id, course_id);
 	}
 }

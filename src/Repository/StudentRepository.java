@@ -181,12 +181,16 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "select s.pid, s.firstname, s.lastname, s.middlename, s.ssn, rs.type, e.unit, e.letter_option, e.su_option from ENROLLMENT e "
+				 "with class_title as "
+				+"( select c.title from CLASS c where c.id = :class_id ) "
+				+"select s.pid, s.firstname, s.lastname, s.middlename, s.ssn, rs.type, e.unit, e.letter_option, e.su_option, qn.name as quarter, q.year from ENROLLMENT e "
 				+"join STUDENT s on e.student_id = s.id "
 				+"join RESIDENT_STATUS rs on s.resident_status = rs.id "
 				+"join SECTION sc on e.section_id = sc.id "
 				+"join CLASS c on sc.class_id = c.id "
-				+"where c.id = :class_id "
+				+"join QUARTER q on c.quarter_id = q.id "
+				+"join QUARTER_NAME qn on q.name_id = qn.id "
+				+"join class_title ct on c.title = ct.title"
 				)
 		.setParameter("class_id", class_id)
 		.getResultList();
@@ -208,7 +212,12 @@ public class StudentRepository extends BaseRepository implements IStudentReposit
 			enrollment.setUnitTaken((Integer)obj[6]);
 			enrollment.setLetter_option((Boolean)obj[7]);
 			enrollment.setSu_option((Boolean)obj[8]);
-			
+			enrollment.setSection(new Section());
+			enrollment.getSection().setSectionClass(new CourseClass());
+			enrollment.getSection().getSectionClass().setQuarter(new Quarter());
+			enrollment.getSection().getSectionClass().getQuarter().setQuarterName(new QuarterName());
+			enrollment.getSection().getSectionClass().getQuarter().getQuarterName().setName((String)obj[9]);
+			enrollment.getSection().getSectionClass().getQuarter().setYear((Integer)obj[10]);
 			enrollmentList.add(enrollment);
 		}
 		return enrollmentList;

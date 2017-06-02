@@ -119,14 +119,10 @@
 			</div>
 			
 			<div id="GradeGPAOverYearDiv">
-				<c:forEach var="gradeGPA" items="${gradeGPAFacultyCourseList}">
+				<c:forEach var="gpa" items="${gradeGPAFacultyCourseList}">
 					<div class="row">
 						<div class="col-md-4">
-							<h4>${gradeGPA.grade}</h4>
-						</div>
-						
-						<div class="col-md-4">
-							<h4>${gradeGPA.gpa}</h4>
+							<h4>${gpa}</h4>
 						</div>
 					</div>
 				</c:forEach>

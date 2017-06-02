@@ -1,5 +1,6 @@
 package Controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import Model.GradeCount;
-import Model.GradeGPA;
 import Service.GradeReportService;
 
 @RestController
@@ -58,9 +58,9 @@ public class GradeReportController {
 	}
 	
 	@GetMapping("/gradegpa/{faculty_id}/{course_id}")
-	public ResponseEntity<List<GradeGPA>> getGradeGPAFacultyCourse(@PathVariable int faculty_id, @PathVariable int course_id){
+	public ResponseEntity<List<BigDecimal>> getGradeGPAFacultyCourse(@PathVariable int faculty_id, @PathVariable int course_id){
 		try {
-			List<GradeGPA> gradeGPAList = gradeReportService.getGradeGPAFacultyCourse(faculty_id, course_id);
+			List<BigDecimal> gradeGPAList = gradeReportService.getGradeGPAFacultyCourse(faculty_id, course_id);
 			return new ResponseEntity<>(gradeGPAList,HttpStatus.OK);
 		}
 		catch (Exception e){

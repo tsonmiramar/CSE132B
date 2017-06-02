@@ -30,10 +30,6 @@ $("document").ready(function(){
 							"<h3>"+data[idx].student.lastname+"</h3>"
 						);
 					
-					var middlenameDiv = $('<div class=\"col-md-1\"></div>').append(
-							"<h3>"+data[idx].student.middlename+"</h3>"
-						);
-					
 					var ssnDiv = $('<div class=\"col-md-1\"></div>').append(
 							"<h3>"+data[idx].student.ssn+"</h3>"
 						);
@@ -52,15 +48,18 @@ $("document").ready(function(){
 							"<h3>"+gradeOptionText+"</h3>"
 					);
 					
+					var quarterDiv = $('<div class=\"col-md-1\"></div>').append(
+							"<h3>"+data[idx].section.sectionClass.quarter.quarterName.name+" "+data[idx].section.sectionClass.quarter.year+"</h3>"
+						);
+					
 					row.append($(pidDiv));
 					row.append($(firstnameDiv));
 					row.append($(lastnameDiv));
-					row.append($(middlenameDiv));
 					row.append($(ssnDiv));
 					row.append($(residentDiv));
 					row.append($(unitDiv));
 					row.append($(gradeOptionDiv));
-					
+					row.append($(quarterDiv));
 					$("#StudentInfoDiv").append($(row))
 				}
 			},

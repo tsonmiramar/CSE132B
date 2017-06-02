@@ -18,7 +18,6 @@ import Model.DegreeRemainingDA;
 import Model.Enrollment;
 import Model.Faculty;
 import Model.GradeCount;
-import Model.GradeGPA;
 import Model.MSConcentration;
 import Model.Quarter;
 import Model.QuarterGPA_DAO;
@@ -159,7 +158,7 @@ public class ReportController {
 		List<GradeCount> gradeCountFacultyCourseQuarter = gradeReportService.getGradeCountbyFacultyCourseQuarter(faculty_id, course_id, quarter_id);
 		List<GradeCount> gradeCountFacultyCourse = gradeReportService.getGradeCountbyFacultyCourse(faculty_id, course_id);
  		List<GradeCount> gradeCountbyCourse = gradeReportService.getGradeCountbyCourse(course_id);
-		List<GradeGPA> gradeGPAFacultyCourse = gradeReportService.getGradeGPAFacultyCourse(faculty_id, course_id);
+		List<BigDecimal> gradeGPAFacultyCourse = gradeReportService.getGradeGPAFacultyCourse(faculty_id, course_id);
  		model.addAttribute("courseList", courseList);
 		model.addAttribute("facultyList",facultyList);
 		model.addAttribute("quarterList",quarterList);
