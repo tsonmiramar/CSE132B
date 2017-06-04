@@ -21,10 +21,24 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
+<<<<<<< HEAD
 				"select grade, gradeCount from CPQG "
 				+"where course_id = :course_id "
 				+"and faculty_id = :faculty_id "
 				+"and quarter_id = :quarter_id"
+=======
+				 "with enrollment_grade as "
+				+"(select e.grade, count(e.grade) as numGrade from ENROLLMENT e "
+				+"join SECTION s on e.section_id = s.id "
+				+"join CLASS c on s.class_id = c.id "
+				+"where e.grade is not null "
+				+"and c.quarter_id = :quarter_id and s.faculty_id = :faculty_id and c.course_id = :course_id " 
+				+"group by e.grade )"
+				+"select (case when gc.letter_grade like '%+' or gc.letter_grade like '%-' or gc.letter_grade like 'F' then 'other' else gc.letter_grade end) as grade, sum(isnull(eg.numGrade,0)) as gradeCount "
+				+"from GRADE_CONVERSION gc left outer join enrollment_grade eg "
+				+"on gc.letter_grade = eg.grade "
+				+"group by (case when gc.letter_grade like '%+' or gc.letter_grade like '%-' or gc.letter_grade like 'F' then 'other' else gc.letter_grade end) "
+>>>>>>> fb07502707b767a0f96567ddfbb6738b14241a91
 				).setParameter("quarter_id", quarter_id)
 		 		 .setParameter("faculty_id", faculty_id)
 		 		 .setParameter("course_id", course_id)
