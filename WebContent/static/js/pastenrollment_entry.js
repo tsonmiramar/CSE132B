@@ -79,14 +79,14 @@ $('document').ready(function(){
 		}
 		
 		$.ajax({
-			url:$("#pastenrollment_entryForm").attr('action'),
-			type: "POST",
+			url:contextPath+"/class/enrolled/update",
+			type: "PUT",
 			data:JSON.stringify(enrollment),
 			headers: {
 				'Content-Type':'application/json'
 			},
 			success: function(data, textStatus){
-				alert("Successfully insert a new enrollment");
+				alert("Successfully update student's grade");
 			},
 			error: function(data, textStatus){
 				alert("Failed to insert enrollment. Please retry");
@@ -105,6 +105,35 @@ $('document').ready(function(){
 		var student_id = $("#student option:selected").val();
 		var quarter_id = $("#quarter option:selected").val();
 		displayClassEnrolledByStudentandQuarter(student_id,quarter_id);
+	});
+	
+	//Update grade data event handler
+	$("#DisplayEnrollmentDiv").on('click',"#btnUpdate", function(){
+		var form_group = $(this).closest(".form-group");	
+		var enrollment = {
+				'student': {
+					'id' : $("#student option:selected").val()
+				},
+				'section': {
+					'id' : form_group.find("#sectionId").val()
+				},
+				'grade': form_group.find("#gradeUpdate").val()
+		}
+		
+		$.ajax({
+			url:$("#pastenrollment_entryForm").attr('action'),
+			type: "POST",
+			data:JSON.stringify(enrollment),
+			headers: {
+				'Content-Type':'application/json'
+			},
+			success: function(data, textStatus){
+				alert("Successfully insert a new enrollment");
+			},
+			error: function(data, textStatus){
+				alert("Failed to insert enrollment. Please retry");
+			}
+		});
 	});
 /**************** FINISH EVENT HANDLER *******************/
 });
@@ -129,6 +158,7 @@ var displayClassEnrolledByStudentandQuarter = function(student_id,quarter_id){
 				
 						"<div class=\"form-group\">" +
 						"	<div class=\"col-md-4\">" +
+						"		<input type=\"hidden\" id=\"sectionId\" value=\""+data[idx].section.id+"\"/>" +
 						"		<input type=\"text\" class=\"form-control\" id=\"gradeUpdate\" value=\""+data[idx].grade+"\"/>" +
 						"	</div>" +
 						"	<div class=\"col-md-4\">" +

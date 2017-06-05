@@ -128,4 +128,10 @@ public class CourseService implements ICourseService{
 	public List<Enrollment> getAllCourseClassEnrolledByStudentandQuarter(int student_id, int quarter_id){
 		return courseClassRepository.getAllCourseClassEnrolledByStudentandQuarter(student_id,quarter_id);
 	}
+
+	@Override
+	@Transactional
+	public void updateGradebyStudentandSection(Enrollment enrollment) {
+		courseClassRepository.updateGradebyStudentandSection(enrollment);	
+	}
 }

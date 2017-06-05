@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -201,4 +202,16 @@ public class CourseClassController {
 		}
 	}
 	
+	@PutMapping("/enrolled/update")
+	@ResponseBody
+	public ResponseEntity<Void> updateGradebyStudentandSection(@RequestBody Enrollment enrollment){
+		try {
+			courseService.updateGradebyStudentandSection(enrollment);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }
