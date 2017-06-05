@@ -59,7 +59,7 @@
 						
 								<div class="form-group">
 									<div class="col-md-4">
-										<input type="hidden" id="sectionId" value="${enrollment.section.id}"/>
+										<input type="hidden" id="enrollmentId" value="${enrollment.id}"/>
 										<input type="text" class="form-control" id="gradeUpdate" value="${enrollment.grade}"/>
 									</div>
 									<div class="col-md-4">

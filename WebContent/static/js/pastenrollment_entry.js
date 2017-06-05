@@ -79,14 +79,14 @@ $('document').ready(function(){
 		}
 		
 		$.ajax({
-			url:contextPath+"/class/enrolled/update",
-			type: "PUT",
+			url:$("#pastenrollment_entryForm").attr('action'),
+			type: "POST",
 			data:JSON.stringify(enrollment),
 			headers: {
 				'Content-Type':'application/json'
 			},
 			success: function(data, textStatus){
-				alert("Successfully update student's grade");
+				alert("Successfully insert a new enrollment");
 			},
 			error: function(data, textStatus){
 				alert("Failed to insert enrollment. Please retry");
@@ -111,24 +111,19 @@ $('document').ready(function(){
 	$("#DisplayEnrollmentDiv").on('click',"#btnUpdate", function(){
 		var form_group = $(this).closest(".form-group");	
 		var enrollment = {
-				'student': {
-					'id' : $("#student option:selected").val()
-				},
-				'section': {
-					'id' : form_group.find("#sectionId").val()
-				},
+				'id': form_group.find("#enrollmentId").val(),
 				'grade': form_group.find("#gradeUpdate").val()
 		}
 		
 		$.ajax({
-			url:$("#pastenrollment_entryForm").attr('action'),
-			type: "POST",
+			url:contextPath+"/class/enrolled/update",
+			type: "PUT",
 			data:JSON.stringify(enrollment),
 			headers: {
 				'Content-Type':'application/json'
 			},
 			success: function(data, textStatus){
-				alert("Successfully insert a new enrollment");
+				alert("Successfully update student's grade");
 			},
 			error: function(data, textStatus){
 				alert("Failed to insert enrollment. Please retry");
@@ -158,7 +153,7 @@ var displayClassEnrolledByStudentandQuarter = function(student_id,quarter_id){
 				
 						"<div class=\"form-group\">" +
 						"	<div class=\"col-md-4\">" +
-						"		<input type=\"hidden\" id=\"sectionId\" value=\""+data[idx].section.id+"\"/>" +
+						"		<input type=\"hidden\" id=\"enrollmentId\" value=\""+data[idx].id+"\"/>" +
 						"		<input type=\"text\" class=\"form-control\" id=\"gradeUpdate\" value=\""+data[idx].grade+"\"/>" +
 						"	</div>" +
 						"	<div class=\"col-md-4\">" +

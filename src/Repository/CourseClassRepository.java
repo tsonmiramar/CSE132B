@@ -70,7 +70,7 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery( 
-				 "select e.section_id,cs.symbol, co.currNum, e.grade from ENROLLMENT e "
+				 "select e.id,e.section_id,cs.symbol, co.currNum, e.grade from ENROLLMENT e "
 				+"join SECTION s on e.section_id = s.id "
 				+"join CLASS c on s.class_id = c.id "
 				+"join COURSE co on c.course_id = co.id "
@@ -82,16 +82,17 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		
 		for ( Object[] obj : rset){
 			Enrollment enrollment = new Enrollment();
+			enrollment.setId((Integer)obj[0]);
 			enrollment.setSection(new Section());
-			enrollment.getSection().setId((Integer)obj[0]);
+			enrollment.getSection().setId((Integer)obj[1]);
 			enrollment.getSection().setSectionClass(new CourseClass());
 			enrollment.getSection().getSectionClass().setCourse(new Course());
 			enrollment.getSection().getSectionClass().getCourse().setCourseSubject(new CourseSubject());
 			enrollment.getSection().getSectionClass().getCourse().setCourseUnitNumber(new CourseUnitNumber());
-			enrollment.getSection().getSectionClass().getCourse().getCourseSubject().setSymbol((String) obj[1]);
-			enrollment.getSection().getSectionClass().getCourse().getCourseUnitNumber().setCurrNum((String)obj[2]);
+			enrollment.getSection().getSectionClass().getCourse().getCourseSubject().setSymbol((String) obj[2]);
+			enrollment.getSection().getSectionClass().getCourse().getCourseUnitNumber().setCurrNum((String)obj[3]);
 			
-			enrollment.setGrade((String)obj[3]);
+			enrollment.setGrade((String)obj[4]);
 			
 			enrollmentList.add(enrollment);
 		}
@@ -424,10 +425,9 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 		session.createNativeQuery(
 				 "update ENROLLMENT "
 				+ "set grade=:grade "
-				+ "where student_id=:student_id and section_id=:section_id"
+				+ "where id=:enrollment_id"
 				).setParameter("grade", enrollment.grade)
-				.setParameter("student_id", enrollment.getStudent().getId())
-				.setParameter("section_id", enrollment.getSection().getId())
+				.setParameter("enrollment_id", enrollment.getId())
 		.executeUpdate();	
 	}
 }
