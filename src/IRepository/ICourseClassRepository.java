@@ -29,4 +29,6 @@ public interface ICourseClassRepository {
 	List<Section> getAllCurrentQuarterSection();
 
 	List<WeeklyMeeting> getAllAvailableReviewSessionCurrentQuarter(int section_id, int dayFrom_id, int dayTo_id);
+
+	List<Enrollment> getAllCourseClassEnrolledByStudentandQuarter(int student_id, int quarter_id);
 }

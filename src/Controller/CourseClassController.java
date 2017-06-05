@@ -117,7 +117,10 @@ public class CourseClassController {
 	public String getPastEnrollmentEntry(Model model){
 		List<Student> studentList = studentService.getAllStudent();
 		List<Quarter> quarterList = quarterService.getAllQuarter();
-		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(quarterList.isEmpty() ? 0 : quarterList.get(0).getId());
+		int quarter_id = quarterList.isEmpty() ? 0 : quarterList.get(0).getId();
+		int student_id = studentList.isEmpty() ? 0 : studentList.get(0).getId();
+		List<CourseClass> courseClassList = courseService.getAllCourseClassByQuarter(quarter_id);
+		List<Enrollment> enrollmentList = courseService.getAllCourseClassEnrolledByStudentandQuarter(student_id, quarter_id);
 		Map<Integer,Object> courseClassMap = new HashMap<Integer,Object>();
 		for ( CourseClass elem : courseClassList ){
 			courseClassMap.put(elem.getId(), elem);
@@ -129,6 +132,7 @@ public class CourseClassController {
 		model.addAttribute("quarterList",quarterList);
 		model.addAttribute("courseClassList",courseClassList);
 		model.addAttribute("courseClassJSON", courseClassJSON );
+		model.addAttribute("enrollmentList",enrollmentList);
 		return "pastenrollment_entry";
 	}
 	
@@ -177,6 +181,19 @@ public class CourseClassController {
 		try {
 			List<CourseClassConflict> courseClassConflictList = this.courseService.getClassCannotTakebyStudent(student_id, "SPRING", 2017);
 			return new ResponseEntity<>(courseClassConflictList,HttpStatus.OK);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@GetMapping("/enrolled/{student_id}/{quarter_id}")
+	@ResponseBody
+	public ResponseEntity<List<Enrollment>> getAllCourseClassEnrolledByStudentandQuarter(@PathVariable int student_id, @PathVariable int quarter_id){
+		try {
+			List<Enrollment> enrollmentList = courseService.getAllCourseClassEnrolledByStudentandQuarter(student_id, quarter_id);
+			return new ResponseEntity<>(enrollmentList,HttpStatus.OK);
 		}
 		catch (Exception e){
 			e.printStackTrace();

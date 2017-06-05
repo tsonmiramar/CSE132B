@@ -122,4 +122,10 @@ public class CourseService implements ICourseService{
 	public List<WeeklyMeeting> getAllAvailableReviewSessionCurrentQuarter(int section_id, int dayFrom_id, int dayTo_id) {
 		return courseClassRepository.getAllAvailableReviewSessionCurrentQuarter(section_id, dayFrom_id,dayTo_id);
 	}
+	
+	@Override
+	@Transactional
+	public List<Enrollment> getAllCourseClassEnrolledByStudentandQuarter(int student_id, int quarter_id){
+		return courseClassRepository.getAllCourseClassEnrolledByStudentandQuarter(student_id,quarter_id);
+	}
 }

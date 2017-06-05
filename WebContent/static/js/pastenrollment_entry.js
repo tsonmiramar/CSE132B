@@ -93,10 +93,58 @@ $('document').ready(function(){
 			}
 		});
 	});
+	
+	//Display enrolled class event handler
+	$("#student").on('change',function(){
+		var student_id = $("#student option:selected").val();
+		var quarter_id = $("#quarter option:selected").val();
+		displayClassEnrolledByStudentandQuarter(student_id,quarter_id);
+	});
+	
+	$("#quarter").on('change',function(){
+		var student_id = $("#student option:selected").val();
+		var quarter_id = $("#quarter option:selected").val();
+		displayClassEnrolledByStudentandQuarter(student_id,quarter_id);
+	});
 /**************** FINISH EVENT HANDLER *******************/
 });
 
 /**************** HELPER FUNCTION ***********************/
+var displayClassEnrolledByStudentandQuarter = function(student_id,quarter_id){
+	$("#DisplayEnrollmentDiv").empty();
+	$.ajax({
+		url:contextPath+"/class/enrolled/"+student_id+"/"+quarter_id,
+		type: "GET",
+		headers: {
+			'Content-Type':'application/json'
+		},
+		success: function(data){
+			for ( var idx in data ){
+				
+				$("#DisplayEnrollmentDiv").append(
+					"<div class=\"row\">" +
+						"	<div class=\"col-md-4\">" +
+						"		<h5>"+data[idx].section.sectionClass.course.courseSubject.symbol+" "+data[idx].section.sectionClass.course.courseUnitNumber.currNum+"</h5>" +
+						"</div>" +
+				
+						"<div class=\"form-group\">" +
+						"	<div class=\"col-md-4\">" +
+						"		<input type=\"text\" class=\"form-control\" id=\"gradeUpdate\" value=\""+data[idx].grade+"\"/>" +
+						"	</div>" +
+						"	<div class=\"col-md-4\">" +
+						"		<button type=\"button\" class=\"btn btn-primary\">Update</button>" +
+						"	</div>" +
+						"</div>" +
+					"</div>"
+				);
+			}
+		},
+		error: function(data){
+			alert("Failed retrieving enrollment data. Please refresh page");
+		}
+	});
+}
+
 var retrieveClassandSection = function(quarter_id){
 	$.ajax({
 		url:contextPath+"/class/quarter/"+quarter_id+"/list",

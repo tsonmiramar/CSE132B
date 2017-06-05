@@ -64,6 +64,39 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 	}
 	
 	@Override
+	public List<Enrollment> getAllCourseClassEnrolledByStudentandQuarter(int student_id, int quarter_id){
+		Session session = sessionFactory.getCurrentSession();
+		List<Enrollment> enrollmentList = new ArrayList<Enrollment>();
+		
+		@SuppressWarnings("unchecked")
+		List<Object[]> rset = session.createNativeQuery( 
+				 "select cs.symbol, co.currNum, e.grade from ENROLLMENT e "
+				+"join SECTION s on e.section_id = s.id "
+				+"join CLASS c on s.class_id = c.id "
+				+"join COURSE co on c.course_id = co.id "
+				+"join COURSE_SUBJECT cs on co.subject_id = cs.subject_id " 
+				+"where e.student_id = :student_id and c.quarter_id = :quarter_id") 
+				.setParameter("student_id", student_id)
+				.setParameter("quarter_id", quarter_id)
+				.getResultList();
+		
+		for ( Object[] obj : rset){
+			Enrollment enrollment = new Enrollment();
+			enrollment.setSection(new Section());
+			enrollment.getSection().setSectionClass(new CourseClass());
+			enrollment.getSection().getSectionClass().setCourse(new Course());
+			enrollment.getSection().getSectionClass().getCourse().setCourseSubject(new CourseSubject());
+			enrollment.getSection().getSectionClass().getCourse().setCourseUnitNumber(new CourseUnitNumber());
+			enrollment.getSection().getSectionClass().getCourse().getCourseSubject().setSymbol((String) obj[0]);
+			enrollment.getSection().getSectionClass().getCourse().getCourseUnitNumber().setCurrNum((String)obj[1]);
+			
+			enrollment.setGrade((String)obj[2]);
+			
+			enrollmentList.add(enrollment);
+		}
+		return enrollmentList;
+	}
+	@Override
 	public List<CourseClass> getAllCourseClassByQuarter(int quarter_id) {
 		Session session = sessionFactory.getCurrentSession();	
 		
