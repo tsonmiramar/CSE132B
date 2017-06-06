@@ -44,20 +44,35 @@ GO
 create or alter trigger CPG_CPQG_Insert on ENROLLMENT
 after insert as
 begin
-update CPQG 
-set gradeCount = gradeCount + 1
-where course_id in ( select c.course_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
-and faculty_id in ( select s.faculty_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
-and quarter_id in ( select c.quarter_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
-and gradeBase in ( select (case when SUBSTRING(i.grade,1,1) like 'F' then 'other' else SUBSTRING(i.grade,1,1) end) as grade from inserted i );
 
-update CPG
-set gradeCount = gradeCount + 1
-where course_id in ( select c.course_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
-and faculty_id in ( select s.faculty_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
-and gradeBase in ( select (case when SUBSTRING(i.grade,1,1) like 'F' then 'other' else SUBSTRING(i.grade,1,1) end) as grade from inserted i )
-end
-go 
+	declare @tempEnrollNum as tinyint 
+	select @tempEnrollNum = count(e.id) from ENROLLMENT e join inserted i on e.section_id = i.section_id 
+	declare @limitEnrollNum as tinyint
+	select @limitEnrollNum = s.enroll_limit from SECTION s join inserted i on s.id = i.section_id
+
+	/*Check if this new enrollment exceed the enrollment limit*/
+	if @tempEnrollNum > @limitEnrollNum
+		begin;
+			throw 50000,'Failed to enroll student. Reason: Exceeding the enrollment limit',1
+			rollback transaction;
+		end
+	else
+		begin
+			update CPQG 
+			set gradeCount = gradeCount + 1
+			where course_id in ( select c.course_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
+			and faculty_id in ( select s.faculty_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
+			and quarter_id in ( select c.quarter_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
+			and gradeBase in ( select (case when SUBSTRING(i.grade,1,1) like 'F' then 'other' else SUBSTRING(i.grade,1,1) end) as grade from inserted i );
+
+			update CPG
+			set gradeCount = gradeCount + 1
+			where course_id in ( select c.course_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
+			and faculty_id in ( select s.faculty_id from inserted i join SECTION s on i.section_id = s.id join CLASS c on s.class_id = c.id )
+			and gradeBase in ( select (case when SUBSTRING(i.grade,1,1) like 'F' then 'other' else SUBSTRING(i.grade,1,1) end) as grade from inserted i )
+		end
+	end
+go
 
 create or alter trigger CPG_CPQG_Update on ENROLLMENT
 after update as
