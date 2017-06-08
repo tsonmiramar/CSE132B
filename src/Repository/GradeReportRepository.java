@@ -75,7 +75,7 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				  "select course_id, gradeBase, sum(gradeCount) as gradeCount from CPG "
+				  "select gradeBase, sum(gradeCount) as gradeCount from CPG "
 				 +"where course_id = :course_id " 
 				 +"group by course_id, gradeBase "
 				 +"order by course_id, gradeBase")

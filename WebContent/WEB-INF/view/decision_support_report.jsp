@@ -46,7 +46,7 @@
 		
 			<div class="row">
 				<div class="col-md-8">
-					<h3>Grade Count by Quarter:</h3>
+					<h3>Grade Count by Course X, Faculty Y, Quarter Z:</h3>
 				</div>
 			</div>
 			
@@ -74,7 +74,7 @@
 			
 			<div class="row">
 				<div class="col-md-8">
-					<h3>Grade Count Over Years:</h3>
+					<h3>Grade Count by Course X and Faculty Y Over Years:</h3>
 				</div>
 			</div>
 			
@@ -94,7 +94,7 @@
 			
 			<div class="row">
 				<div class="col-md-8">
-					<h3>Grade Count by Course Over Years:</h3>
+					<h3>Grade Count by Course X Over Years:</h3>
 				</div>
 			</div>
 			
