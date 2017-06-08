@@ -21,10 +21,11 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				"select grade, gradeCount from CPQG "
+				"select gradeBase, gradeCount from CPQG "
 				+"where course_id = :course_id "
 				+"and faculty_id = :faculty_id "
-				+"and quarter_id = :quarter_id"
+				+"and quarter_id = :quarter_id "
+				+"order by gradeBase asc"
 				).setParameter("quarter_id", quarter_id)
 		 		 .setParameter("faculty_id", faculty_id)
 		 		 .setParameter("course_id", course_id)
@@ -48,9 +49,10 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "select grade, gradeCount from CPQG "
+				 "select gradeBase, gradeCount from CPG "
 				+"where course_id = :course_id "
-				+"and faculty_id = :faculty_id")
+				+"and faculty_id = :faculty_id "
+				+"order by gradeBase asc")
 				 .setParameter("faculty_id", faculty_id)
 				 .setParameter("course_id", course_id)
 				 .getResultList();
@@ -73,18 +75,10 @@ public class GradeReportRepository extends BaseRepository implements IGradeRepor
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rset = session.createNativeQuery(
-				 "with enrollment_grade as "
-				+"(select e.grade, count(e.grade) as numGrade from ENROLLMENT e "
-				+"join SECTION s on e.section_id = s.id "
-				+"join CLASS c on s.class_id = c.id "
-				+"where e.grade is not null "
-				+"and c.course_id = :course_id " 
-				+"group by e.grade )"
-				+"select (case when gc.letter_grade like '%+' or gc.letter_grade like '%-' or gc.letter_grade like 'F' then 'other' else gc.letter_grade end) as grade, sum(isnull(eg.numGrade,0)) as gradeCount "
-				+"from GRADE_CONVERSION gc left outer join enrollment_grade eg "
-				+"on gc.letter_grade = eg.grade "
-				+"group by (case when gc.letter_grade like '%+' or gc.letter_grade like '%-' or gc.letter_grade like 'F' then 'other' else gc.letter_grade end) "
-				)
+				  "select course_id, gradeBase, sum(gradeCount) as gradeCount from CPG "
+				 +"where course_id = :course_id " 
+				 +"group by course_id, gradeBase "
+				 +"order by course_id, gradeBase")
 		 		 .setParameter("course_id", course_id)
 		 		 .getResultList();
 		
