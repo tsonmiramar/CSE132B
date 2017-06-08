@@ -117,7 +117,8 @@ $('document').ready(function(){
 				alert("Successfully insert a new class");
 			},
 			error: function(data, textStatus){
-				alert("Failed to insert class. Please retry");
+				console.log(data.responseText);
+				alert(data.responseText);
 			}
 		});
 	});

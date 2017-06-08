@@ -126,7 +126,7 @@ $('document').ready(function(){
 				alert("Successfully update student's grade");
 			},
 			error: function(data, textStatus){
-				alert("Failed to insert enrollment. Please retry");
+				alert(data.responseText);
 			}
 		});
 	});

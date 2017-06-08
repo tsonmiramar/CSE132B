@@ -60,7 +60,7 @@ $('document').ready(function(){
 				alert("Successfully insert a new enrollment");
 			},
 			error: function(data, textStatus){
-				alert("Failed to insert enrollment. Please retry");
+				alert(data.responseText);
 			}
 		});
 	});

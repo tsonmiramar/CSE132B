@@ -86,14 +86,18 @@ public class CourseClassController {
 	
 	@PostMapping("/add")
 	@ResponseBody
-	public ResponseEntity<Void> addCourseClass(@RequestBody CourseClass courseClass){
+	public ResponseEntity<String> addCourseClass(@RequestBody CourseClass courseClass){
 		try {
 			this.courseService.insertCourseClass(courseClass);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 		catch (Exception e){
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			while ( e.getCause() != null){
+				e = (Exception)e.getCause();
+			}
+			System.out.println(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -139,14 +143,17 @@ public class CourseClassController {
 	
 	@PostMapping("/enrollment/add")
 	@ResponseBody
-	public ResponseEntity<Void> addClassEnrollment(@RequestBody Enrollment enrollment){
+	public ResponseEntity<String> addClassEnrollment(@RequestBody Enrollment enrollment){
 		try {
 			this.courseService.insertCourseEnrollment(enrollment);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>("",HttpStatus.OK);
 		}
 		catch (Exception e){
+			while ( e.getCause() != null){
+				e = (Exception)e.getCause();
+			}
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		}
 	}
 	

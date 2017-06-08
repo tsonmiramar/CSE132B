@@ -32,23 +32,120 @@ public class CourseClassRepository extends BaseRepository implements ICourseClas
 	public void insertCourseClass(CourseClass courseClass) {
 		Session session = sessionFactory.getCurrentSession();	
 		
+		Object row = session.createNativeQuery("select id from CLASS "
+				+ "where course_id=:course_id and quarter_id = :quarter_id")
+				.setParameter("course_id", courseClass.getCourse().getId())
+				.setParameter("quarter_id",courseClass.getQuarter().getId())
+				.getSingleResult();
+		
+		
+		if ( row  == null ){
+			//Insert to CLASS Table
+			session.createNativeQuery("insert into CLASS values (:course_id,:title,:quarter_id")
+					.setParameter("course_id", courseClass.getCourse().getId())
+					.setParameter("title", courseClass.getTitle())
+					.setParameter("quarter_id", courseClass.getQuarter().getId())
+					.executeUpdate();
+			courseClass.setId((Integer) session.createNativeQuery("select max(id) from CLASS").getSingleResult());
+		}
+		else {
+			courseClass.setId((Integer)row);
+		}
+		
 		for ( Section s : courseClass.getSectionList() ){
 			s.setSectionClass(courseClass);
 			
-			for ( ReviewSession r : s.getReviewSessionList()){
-				r.setSection(s);
-			}
+			//Insert to SECTION Table
+			session.createNativeQuery("insert into SECTION values (:class_id,:faculty_id,:enroll_limit)")
+					.setParameter("class_id", s.getSectionClass().getId())
+					.setParameter("faculty_id", s.getFaculty().getId())
+					.setParameter("enroll_limit", s.getEnrollmentLimit())
+					.executeUpdate();
+			s.setId((Integer)session.createNativeQuery("select max(id) from SECTION").getSingleResult());
 			
+			//Insert to MEETING Table
 			for ( Discussion d : s.getDiscussionList()){
 				d.setSection(s);
+				
+				session.createNativeQuery("insert into MEETING values (:start_time,:end_time,:room,:building,:section_id)")
+						.setParameter("start_time", d.getStartTime())
+						.setParameter("end_time", d.getEndTime())
+						.setParameter("room", d.getRoom())
+						.setParameter("building", d.getBuilding())
+						.setParameter("section_id", d.getSection().getId())
+						.executeUpdate();
+				d.setId((Integer)session.createNativeQuery("select max(id) from MEETING").getSingleResult());
 			}
 			
 			for ( NonDiscussion n : s.getNondiscussionList()){
 				n.setSection(s);
+				
+				session.createNativeQuery("insert into MEETING values (:start_time,:end_time,:room,:building,:section_id)")
+					.setParameter("start_time", n.getStartTime())
+					.setParameter("end_time", n.getEndTime())
+					.setParameter("room", n.getRoom())
+					.setParameter("building", n.getBuilding())
+					.setParameter("section_id", n.getSection().getId())
+					.executeUpdate();
+				
+				n.setId((Integer)session.createNativeQuery("select max(id) from MEETING").getSingleResult());
+			}
+			
+			//Insert to WEEKLY_MEETING Table
+			StringBuilder discussion_val = new StringBuilder();
+			StringBuilder nondiscussion_val = new StringBuilder();
+			StringBuilder discussion_wm = new StringBuilder();
+			StringBuilder nondiscussion_wm = new StringBuilder();
+			int i = 0;
+			for ( Discussion d : s.getDiscussionList()){
+				discussion_wm.append("("+d.getId()+",'"+d.getWeekday()+"')");
+				int required = d.isRequired()? 1:0;
+				discussion_val.append("("+d.getId()+","+ required +")");
+				if ( i < s.getDiscussionList().size() - 1){
+					discussion_wm.append(",");
+					discussion_val.append(",");
+				}
+				i++;
+			}
+			
+			i = 0;
+			for ( NonDiscussion n : s.getNondiscussionList()){
+				nondiscussion_wm.append("("+n.getId()+",'"+n.getWeekday()+"')");
+				nondiscussion_val.append("("+n.getId()+",'"+n.getType()+"')");
+				if ( i < s.getNondiscussionList().size() - 1){
+					nondiscussion_wm.append(",");
+					nondiscussion_val.append(",");
+				}
+				i++;
+			}
+		
+			if (!s.getDiscussionList().isEmpty() && !s.getNondiscussionList().isEmpty() ){
+				session.createNativeQuery("insert into WEEKLY_MEETING values "
+						+ discussion_wm.toString()+","+nondiscussion_wm.toString())
+						.executeUpdate();
+			}
+			else if ( !s.getDiscussionList().isEmpty() && s.getNondiscussionList().isEmpty()){
+				session.createNativeQuery("insert into WEEKLY_MEETING values "
+						+ discussion_wm.toString())
+						.executeUpdate();
+			}
+			else if ( s.getDiscussionList().isEmpty() && !s.getNondiscussionList().isEmpty()){
+				session.createNativeQuery("insert into WEEKLY_MEETING values "
+						+nondiscussion_wm.toString())
+						.executeUpdate();
+			}
+			
+			//Insert to Discussion
+			if ( !s.getDiscussionList().isEmpty() ){
+				session.createNativeQuery("insert into DISCUSSION values "
+						+ discussion_val.toString()).executeUpdate();
+			}
+			
+			if ( !s.getNondiscussionList().isEmpty() ){
+				session.createNativeQuery("insert into NON_DISCUSSION values "
+						+ nondiscussion_val.toString()).executeUpdate();
 			}
 		}
-			
-		session.save(courseClass);	
 	}
 	
 	@Override
